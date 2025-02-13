@@ -2,7 +2,7 @@
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  background: #B3E5FC; /* Brighter pastel blue for a cleaner look */
+  background: #B3E5FC;
   color: black;
   margin: 0;
   padding: 20px;
@@ -14,7 +14,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh; /* Center the content vertically */
+  height: 100vh;
 }
 
 .landing-header {
@@ -34,28 +34,46 @@ body {
   margin-bottom: 20px;
 }
 
-/* Tooth image above the timer (hidden until timer starts) */
+/* Landing page button styling */
+#landingStartButton {
+  padding: 12px 24px;
+  font-size: 1.1em;
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-family: Arial, sans-serif;
+  color: white;
+  background-color: #77DD77;
+}
+
+#landingStartButton:hover {
+  background-color: #99E699;
+  transform: scale(1.05);
+}
+
+/* ===== TIMER PAGE ===== */
+#timerPage {
+  min-height: 100vh;
+  padding: 20px;
+  justify-content: center;
+}
+
+/* Tooth image above the timer */
 #toothImage {
-  width: 800px;  /* 2x original size */
-  height: 800px;
+  width: 400px;
+  height: 400px;
+  max-width: 90%;
   background: url('tooth.png') no-repeat center;
   background-size: contain;
   margin-bottom: 20px;
 }
 
-/* Hover animation for tooth */
-@keyframes floatTooth {
-  0%, 100% { transform: translateY(0) rotate(30deg); }
-  50% { transform: translateY(-10px) rotate(30deg); }
-}
-.bounceTooth {
-  animation: floatTooth 2s infinite ease-in-out;
-}
-
-/* Timer - Digital font, no background */
+/* Timer styling */
 #timer {
   font-size: 4em;
-  font-family: 'Digital-7', sans-serif;
+  font-family: 'Digital-7', monospace, sans-serif;
   color: #FF6F61;
   font-weight: bold;
   margin: 20px 0;
@@ -71,25 +89,65 @@ button {
   cursor: pointer;
   transition: 0.3s;
   font-family: Arial, sans-serif;
-  color: white; /* White text for all buttons */
+  color: white;
 }
 
 button:hover {
   transform: scale(1.05);
 }
 
-/* Start (Brushing) Button */
 #startButton { background-color: #77DD77; }
 #startButton:hover { background-color: #99E699; }
 
-/* Pause Button */
 #pauseButton { background-color: #FFB347; }
 #pauseButton:hover { background-color: #FFC987; }
 
-/* Stop Button */
 #stopButton { background-color: #FF6961; }
 #stopButton:hover { background-color: #FF867C; }
 
-/* Reset Button */
 #resetButton { background-color: black; }
 #resetButton:hover { background-color: #333; }
+
+/* Animation */
+@keyframes floatTooth {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.bounceTooth {
+  animation: floatTooth 2s infinite ease-in-out;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .landing-header {
+    font-size: 2em;
+    padding: 0 15px;
+  }
+
+  #landingToothImage {
+    width: 200px;
+    height: 200px;
+  }
+
+  #toothImage {
+    width: 300px;
+    height: 300px;
+  }
+
+  #timer {
+    font-size: 3em;
+  }
+
+  button {
+    padding: 10px 20px;
+    font-size: 1em;
+    margin: 8px;
+  }
+
+  #timerButtons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
