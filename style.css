@@ -1,89 +1,92 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tooth Brushing Timer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link href="https://fonts.cdnfonts.com/css/digital-7" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+body {
+    font-family: 'Comic Sans', sans-serif;
+    text-align: center;
+    background: #FFDDC1; /* Pastel peach */
+    color: black;
+    padding: 20px;
+    position: relative;
+}
 
-    <h1>Tooth Brushing Timer</h1>
-    <p>Brush for 2 minutes for a healthy smile!</p>
-    
-    <div id="timer-container">
-        <div id="timer">2:00</div>
-        <div id="tooth-image"></div>
-    </div>
+h1 {
+    margin-top: 50px;
+    color: #A1C3D1; /* Pastel blue */
+    font-size: 3.5em; /* Increased heading size */
+    font-weight: bold;
+    font-family: 'Press Start 2P', cursive; /* Retro font */
+}
 
-    <button id="startButton" onclick="startTimer()">Start Brushing</button>
-    <button id="pauseButton" onclick="pauseTimer()">Pause Brushing</button>
-    <button id="stopButton" onclick="stopTimer()">Stop Brushing</button>
-    <button id="resetButton" onclick="resetTimer()">Reset</button>
+#timer-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    gap: 20px; /* Ensures spacing between timer and image */
+}
 
-    <script>
-        let countdown;
-        let timeLeft = 120;
-        let isPaused = false;
-        const timerDisplay = document.getElementById("timer");
-        const stopButton = document.getElementById("stopButton");
-        const pauseButton = document.getElementById("pauseButton");
+#timer {
+    font-size: 3em;
+    font-weight: bold;
+    color: #FF6F61; /* Pastel red */
+    margin: 20px 0;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Digital-7', sans-serif; /* Digital font */
+}
 
-        function startTimer() {
-            if (!isPaused) {
-                timeLeft = 120;
-            }
-            stopButton.disabled = false;
-            pauseButton.textContent = "Pause Brushing";
-            isPaused = false;
+#tooth-image {
+    background: url('tooth.jpg') no-repeat center;
+    background-size: contain;
+    width: 180px; /* Larger than buttons */
+    height: 180px;
+    transform: rotate(30deg);
+    margin-left: 50px; /* Move it further right */
+}
 
-            countdown = setInterval(() => {
-                if (!isPaused) {
-                    let minutes = Math.floor(timeLeft / 60);
-                    let seconds = timeLeft % 60;
-                    if (seconds < 10) seconds = "0" + seconds;
-                    timerDisplay.textContent = minutes + ":" + seconds;
+button {
+    padding: 8px 16px; /* Made buttons smaller */
+    font-size: 1em; /* Reduced button text size */
+    margin: 10px;
+    font-family: 'Arial', sans-serif;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-                    if (timeLeft <= 0) {
-                        clearInterval(countdown);
-                        timerDisplay.textContent = "Done!";
-                        alert("Great job! Your brushing is complete! 🎉");
-                        stopButton.disabled = true;
-                        pauseButton.disabled = true;
-                    }
-                    timeLeft--;
-                }
-            }, 1000);
-        }
+#startButton {
+    background-color: #77DD77; /* Pastel green */
+    color: white;
+}
 
-        function pauseTimer() {
-            if (!isPaused) {
-                isPaused = true;
-                pauseButton.textContent = "Resume Brushing";
-            } else {
-                isPaused = false;
-                pauseButton.textContent = "Pause Brushing";
-            }
-        }
+#startButton:hover {
+    background-color: #99E699; /* Lighter pastel green */
+}
 
-        function stopTimer() {
-            clearInterval(countdown);
-            timerDisplay.textContent = "Stopped";
-            stopButton.disabled = true;
-            pauseButton.disabled = true;
-        }
+#pauseButton {
+    background-color: #FFB347; /* Pastel orange */
+    color: black;
+}
 
-        function resetTimer() {
-            clearInterval(countdown);
-            timerDisplay.textContent = "2:00";
-            timeLeft = 120;
-            stopButton.disabled = false;
-            pauseButton.disabled = false;
-            pauseButton.textContent = "Pause Brushing";
-        }
-    </script>
+#pauseButton:hover {
+    background-color: #FFC987; /* Lighter pastel orange */
+}
 
-</body>
-</html>
+#stopButton {
+    background-color: #FF6961; /* Pastel red */
+    color: white;
+}
+
+#stopButton:hover {
+    background-color: #FF867C; /* Lighter pastel red */
+}
+
+#resetButton {
+    background-color: #AEC6CF; /* Pastel blue */
+    color: white;
+}
+
+#resetButton:hover {
+    background-color: #C4D8E2; /* Lighter pastel blue */
+}
