@@ -7,7 +7,17 @@ body {
   margin: 0;
   padding: 10px;
   overflow: hidden;
-  cursor: url('toothbrush.png'), auto;
+}
+
+/* Custom cursor for landing page */
+#landingPage {
+  cursor: url('toothbrush.png') 16 16, auto;
+}
+
+/* Mirror the cursor image */
+#landingPage {
+  cursor: url('toothbrush.png') 16 16, auto;
+  transform: scaleX(-1); /* Mirror the cursor */
 }
 
 /* ===== LANDING PAGE ===== */
@@ -88,7 +98,7 @@ body {
 #timer {
   font-size: 4em;
   font-family: 'Digital-7 Mono', monospace;
-  color: #FF6F61;
+  color: #BF40BF; /* Updated timer color */
   margin: 10px 0;
 }
 
@@ -120,25 +130,25 @@ button:hover {
 #pauseButton { background-color: #FFB347; }
 #pauseButton:hover { background-color: #FFC987; }
 
-#stopButton { background-color: #FF6F61; } /* Pastel red */
+#stopButton { background-color: #FF6F61; }
 #stopButton:hover { background-color: #FF867C; }
 
-#resetButton { background-color: #000000; } /* Black */
+#resetButton { background-color: #000000; }
 #resetButton:hover { background-color: #333; }
 
 #returnHomeButton {
-  background-color: transparent; /* No background */
+  background-color: transparent;
   position: absolute;
   top: 20px;
   right: 20px;
   padding: 10px;
   font-size: 1.5em;
   border: none;
-  color: #000000; /* Black home icon */
+  color: #000000;
 }
 
 #returnHomeButton:hover {
-  color: #555; /* Darker grey on hover */
+  color: #555;
 }
 
 /* Animation */
@@ -153,7 +163,6 @@ button:hover {
 
 /* ===== MOBILE STYLES ===== */
 @media (max-width: 768px) {
-  /* Adjust landing page */
   .landing-header {
     font-size: 1.8em;
     padding: 0 10px;
@@ -169,7 +178,6 @@ button:hover {
     font-size: 1em;
   }
 
-  /* Adjust timer page */
   #timerHeading {
     font-size: 1.2em;
   }
@@ -198,7 +206,6 @@ button:hover {
 }
 
 @media (max-width: 480px) {
-  /* Further adjustments for very small screens */
   .landing-header {
     font-size: 1.5em;
   }
