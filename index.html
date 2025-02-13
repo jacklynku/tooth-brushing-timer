@@ -40,7 +40,7 @@
     <div id="timerButtons">
       <button id="startButton" onclick="startTimer()" aria-label="Start timer">Start</button>
       <button id="pauseButton" onclick="pauseTimer()" aria-label="Pause timer" disabled>Pause</button>
-      <button id="stopButton" onclick="stopTimer()" aria-label="Stop timer">Stop</button>
+      <button id="stopButton" onclick="stopTimer()" aria-label="Stop timer" disabled>Stop</button>
       <button id="resetButton" onclick="resetTimer()" aria-label="Reset timer">Reset</button>
     </div>
 
@@ -126,7 +126,7 @@
     function startTimer() {
       startBtnTimerPage.style.display = "none";
       pauseButton.disabled = false;
-      stopButton.disabled = false;
+      stopButton.disabled = false; // Enable Stop button
       isPaused = false;
       isStopped = false;
       startTime = Date.now();
@@ -155,7 +155,7 @@
           if (timeLeft <= 0) {
             clearInterval(countdown);
             timerDisplay.textContent = "0:00";
-            stopButton.disabled = true;
+            stopButton.disabled = true; // Disable Stop button
             pauseButton.disabled = true;
             toothImage.style.backgroundImage = `url('clean5.png')`;
             logAction("Completed", 120); // Log completion
@@ -187,7 +187,7 @@
     function stopTimer() {
       clearInterval(countdown);
       isStopped = true;
-      stopButton.disabled = true;
+      stopButton.disabled = true; // Disable Stop button
       pauseButton.disabled = true; // Disable pause button after stopping
       logAction("Stopped", getElapsedTime());
     }
@@ -199,7 +199,7 @@
       timerDisplay.style.color = "#B39EB5"; // Reset to pastel purple
       timerDisplay.classList.remove("magnify");
       timeLeft = 120;
-      stopButton.disabled = false;
+      stopButton.disabled = true; // Disable Stop button
       pauseButton.disabled = true;
       pauseButton.textContent = "Pause";
       pauseButton.style.backgroundColor = "#FFB347";
