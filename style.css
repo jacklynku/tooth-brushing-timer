@@ -98,8 +98,8 @@ body {
 #timer {
   font-size: 4em;
   font-family: 'Digital-7 Mono', monospace;
-  color: #DAEAF6; /* Updated timer color */
-  margin: 10px 0;
+  color: #B39EB5; /* Pastel purple */
+  margin: 5px 0; /* Reduced spacing */
 }
 
 /* Pulsate animation for last 10 seconds */
@@ -165,15 +165,15 @@ button:hover {
   height: 24px;
 }
 
-#calendarButton {
+#calendarButton, #landingCalendarButton {
   background-color: transparent;
   position: absolute;
   top: 60px; /* Below the home button */
   right: 20px;
   padding: 0;
   border: none;
-  width: 24px;
-  height: 24px;
+  font-size: 1.5em;
+  cursor: pointer;
 }
 
 /* Brush Log Table */
@@ -284,10 +284,4 @@ button:hover {
 }
 
 /* ===== MOBILE STYLES ===== */
-@media (max-width: 768px) {
-  .landing-header {
-    font-size: 1.8em;
-    padding: 0 10px;
-  }
-
-  #landingTo
+@media (max-width: 768
