@@ -7,7 +7,7 @@
   
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <link href="https://fonts.cdnfonts.com/css/digital-7-mono" rel="stylesheet">         
+  <link href="https://fonts.cdnfonts.com/css/digital-7-mono" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -22,6 +22,9 @@
 
   <!-- Timer Page (hidden initially) -->
   <div id="timerPage" style="display: none;">
+    <!-- Return to Home Button -->
+    <button id="returnHomeButton" onclick="returnHome()" aria-label="Return to home">🏠</button>
+
     <h1 id="timerHeading">TOOTH BRUSHING TIMER</h1>
 
     <!-- Tooth image above the timer (hidden until timer starts) -->
@@ -31,10 +34,9 @@
 
     <div id="timerButtons">
       <button id="startButton" onclick="startTimer()" aria-label="Start timer">Start</button>
-      <button id="pauseButton" onclick="pauseTimer()" aria-label="Pause timer">Pause</button>
+      <button id="pauseButton" onclick="pauseTimer()" aria-label="Pause timer" disabled>Pause</button>
       <button id="stopButton" onclick="stopTimer()" aria-label="Stop timer">Stop</button>
       <button id="resetButton" onclick="resetTimer()" aria-label="Reset timer">Reset</button>
-      <button id="returnHomeButton" onclick="returnHome()" aria-label="Return to home">Return to Home</button>
     </div>
   </div>
 
@@ -63,12 +65,12 @@
     // 2) Start Timer
     function startTimer() {
       startBtnTimerPage.style.display = "none";
+      pauseButton.disabled = false; // Enable pause button when timer starts
 
       if (!isPaused) {
         timeLeft = 120;
       }
       stopButton.disabled = false;
-      pauseButton.disabled = false;
       pauseButton.textContent = "Pause";
       isPaused = false;
 
@@ -104,9 +106,11 @@
       if (!isPaused) {
         isPaused = true;
         pauseButton.textContent = "Resume";
+        pauseButton.style.backgroundColor = "#77DD77"; // Green for Resume
       } else {
         isPaused = false;
         pauseButton.textContent = "Pause";
+        pauseButton.style.backgroundColor = "#FFB347"; // Orange for Pause
       }
     }
 
@@ -115,7 +119,7 @@
       clearInterval(countdown);
       timerDisplay.style.fontFamily = "Arial, sans-serif";
       timerDisplay.style.color = "red";
-      timerDisplay.textContent = "STOPPED!";
+      timerDisplay.textContent = "Stopped";
       stopButton.disabled = true;
       pauseButton.disabled = true;
       toothImage.classList.remove("bounceTooth");
@@ -125,12 +129,13 @@
     function resetTimer() {
       clearInterval(countdown);
       timerDisplay.textContent = "2:00";
-      timerDisplay.style.fontFamily = "'Digital-7', monospace";
+      timerDisplay.style.fontFamily = "'Digital-7 Mono', monospace";
       timerDisplay.style.color = "#FF6F61";
       timeLeft = 120;
       stopButton.disabled = false;
-      pauseButton.disabled = false;
+      pauseButton.disabled = true; // Disable pause button on reset
       pauseButton.textContent = "Pause";
+      pauseButton.style.backgroundColor = "#FFB347"; // Reset to orange
       isPaused = false;
       toothImage.style.display = "none";
       toothImage.classList.remove("bounceTooth");
