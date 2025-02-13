@@ -16,7 +16,7 @@ h1 {
     font-weight: bold;
     color: red;
     margin: 20px 0;
-    background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Tooth.svg/1200px-Tooth.svg.png') no-repeat center;
+    background: url('tooth.jpg') no-repeat center;
     background-size: contain;
     height: 100px;
     display: flex;
@@ -28,34 +28,36 @@ button {
     padding: 15px 25px;
     font-size: 1.5em;
     margin: 10px;
-    background-color: white;
-    color: black;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
     border: none;
     border-radius: 10px;
     cursor: pointer;
     transition: 0.3s;
 }
 
-button:hover {
-    background-color: #ff5e62;
+#startButton {
+    background-color: green;
     color: white;
 }
 
+#startButton:hover {
+    background-color: darkgreen;
+}
+
 #pauseButton {
-    background-color: #ffd700;
+    background-color: orange;
     color: black;
 }
 
 #pauseButton:hover {
-    background-color: #ffcc00;
-    color: black;
+    background-color: darkorange;
 }
 
 #stopButton {
-    background-color: #dc3545;
+    background-color: red;
     color: white;
 }
 
 #stopButton:hover {
-    background-color: #c82333;
+    background-color: darkred;
 }
