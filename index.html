@@ -17,7 +17,7 @@
   <div id="landingPage">
     <h1 class="landing-header">Let's Brush Our Teeth</h1>
     <div id="landingToothImage"></div>
-    <button id="landingStartButton" onclick="enterTimer()">Start</button>
+    <button id="landingStartButton" onclick="enterTimer()" aria-label="Start brushing timer">Start</button>
   </div>
 
   <!-- Timer Page (hidden initially) -->
@@ -30,10 +30,10 @@
     <div id="timer">2:00</div>
 
     <div id="timerButtons">
-      <button id="startButton" onclick="startTimer()">Start</button>
-      <button id="pauseButton" onclick="pauseTimer()">Pause</button>
-      <button id="stopButton" onclick="stopTimer()">Stop</button>
-      <button id="resetButton" onclick="resetTimer()">Reset</button>
+      <button id="startButton" onclick="startTimer()" aria-label="Start timer">Start</button>
+      <button id="pauseButton" onclick="pauseTimer()" aria-label="Pause timer">Pause</button>
+      <button id="stopButton" onclick="stopTimer()" aria-label="Stop timer">Stop</button>
+      <button id="resetButton" onclick="resetTimer()" aria-label="Reset timer">Reset</button>
     </div>
   </div>
 
