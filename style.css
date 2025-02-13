@@ -2,7 +2,7 @@
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  background: #AEC6CF; /* Pastel blue background for entire page */
+  background: #B3E5FC; /* Brighter pastel blue for a cleaner look */
   color: black;
   margin: 0;
   padding: 20px;
@@ -21,91 +21,47 @@ body {
   margin-bottom: 20px;
   font-size: 3em;
   color: darkblue;
-  font-family: 'Press Start 2P'; /* Retro font for heading */
+  font-family: 'Press Start 2P', cursive;
   font-weight: bold;
 }
 
 /* Tooth image on landing page */
 #landingToothImage {
-  width: 400px;  /* Original size */
-  height: 400px; /* Original size */
+  width: 300px;
+  height: 300px;
   background: url('tooth.png') no-repeat center;
   background-size: contain;
   margin-bottom: 20px;
-  transform: scale(2); /* Doubles the size while keeping it responsive */
-}
-
-/* Start Button on Landing Page */
-#landingStartButton {
-  padding: 12px 24px;
-  font-size: 1.4em;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.3s;
-  /* More playful font for 'Start' */
-  font-family: 'Comic Sans MS', sans-serif;
-  background-color: #AEC6CF; /* Pastel blue */
-  color: white;
-}
-#landingStartButton:hover {
-  transform: scale(1.05);
-  background-color: #90EE90; /* Lighter pastel green */
-}
-
-/* ===== TIMER PAGE ===== */
-#timerPage {
-  width: 100%;
-  min-height: 100vh;
-  text-align: center;
-}
-
-#timerHeading {
-  color: darkblue;
-  font-size: 3em;
-  font-family: 'Press Start 2P'; /* Retro font */
-  font-weight: bold;
-  margin-top: 30px;
-}
-
-/* Countdown Timer - No background, digital font */
-#timer {
-  font-size: 3em;
-  font-family: 'Digital-7', sans-serif; /* Digital font */
-  color: #FF6F61; /* Pastel red */
-  font-weight: bold;
-  margin: 20px 0;
-}
-
-/* Container for Timer Buttons */
-#timerButtons {
-  margin-top: 10px;
 }
 
 /* Tooth image above the timer (hidden until timer starts) */
 #toothImage {
-  width: 400px;  /* Original size */
-  height: 400px; /* Original size */
+  width: 800px;  /* 2x original size */
+  height: 800px;
   background: url('tooth.png') no-repeat center;
   background-size: contain;
   margin-bottom: 20px;
-  transform: scale(2); /* Doubles the size while keeping it responsive */
 }
 
-/* Hover (bounce) animation for the tooth */
+/* Hover animation for tooth */
 @keyframes floatTooth {
-  0%, 100% {
-    transform: translateY(0) rotate(30deg);
-  }
-  50% {
-    transform: translateY(-10px) rotate(30deg);
-  }
+  0%, 100% { transform: translateY(0) rotate(30deg); }
+  50% { transform: translateY(-10px) rotate(30deg); }
 }
 .bounceTooth {
   animation: floatTooth 2s infinite ease-in-out;
 }
 
-/* ===== BUTTONS (Timer Page) ===== */
+/* Timer - Digital font, no background */
+#timer {
+  font-size: 4em;
+  font-family: 'Digital-7', sans-serif;
+  color: #FF6F61;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+/* Button Styling */
 button {
   padding: 12px 24px;
   font-size: 1.1em;
@@ -115,7 +71,7 @@ button {
   cursor: pointer;
   transition: 0.3s;
   font-family: Arial, sans-serif;
-  color: white; /* All buttons have white text now */
+  color: white; /* White text for all buttons */
 }
 
 button:hover {
@@ -123,33 +79,17 @@ button:hover {
 }
 
 /* Start (Brushing) Button */
-#startButton {
-  background-color: #77DD77; /* Pastel green */
-}
-#startButton:hover {
-  background-color: #99E699;
-}
+#startButton { background-color: #77DD77; }
+#startButton:hover { background-color: #99E699; }
 
 /* Pause Button */
-#pauseButton {
-  background-color: #FFB347; /* Pastel orange */
-}
-#pauseButton:hover {
-  background-color: #FFC987;
-}
+#pauseButton { background-color: #FFB347; }
+#pauseButton:hover { background-color: #FFC987; }
 
 /* Stop Button */
-#stopButton {
-  background-color: #FF6961; /* Pastel red */
-}
-#stopButton:hover {
-  background-color: #FF867C;
-}
+#stopButton { background-color: #FF6961; }
+#stopButton:hover { background-color: #FF867C; }
 
 /* Reset Button */
-#resetButton {
-  background-color: black; /* Black reset button */
-}
-#resetButton:hover {
-  background-color: #333; /* Darker hover effect */
-}
+#resetButton { background-color: black; }
+#resetButton:hover { background-color: #333; }
