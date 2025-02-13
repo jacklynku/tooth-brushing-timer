@@ -120,23 +120,25 @@ button:hover {
 #pauseButton { background-color: #FFB347; }
 #pauseButton:hover { background-color: #FFC987; }
 
-#stopButton { background-color: #FF6961; }
+#stopButton { background-color: #FF6F61; } /* Pastel red */
 #stopButton:hover { background-color: #FF867C; }
 
-#resetButton { background-color: #555; }
-#resetButton:hover { background-color: #777; }
+#resetButton { background-color: #000000; } /* Black */
+#resetButton:hover { background-color: #333; }
 
 #returnHomeButton {
-  background-color: #64B5F6;
+  background-color: transparent; /* No background */
   position: absolute;
   top: 20px;
   right: 20px;
   padding: 10px;
   font-size: 1.5em;
+  border: none;
+  color: #000000; /* Black home icon */
 }
 
 #returnHomeButton:hover {
-  background-color: #42A5F5;
+  color: #555; /* Darker grey on hover */
 }
 
 /* Animation */
