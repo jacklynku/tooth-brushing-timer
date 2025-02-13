@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Let's Brush Our Teeth</title>
   
-  <!-- Retro heading font for headings -->
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <!-- Digital timer font -->
   <link href="https://fonts.cdnfonts.com/css/digital-7" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -22,7 +22,7 @@
 
   <!-- Timer Page (hidden initially) -->
   <div id="timerPage" style="display: none;">
-    <h1 id="timerHeading">Tooth Brushing Timer</h1>
+    <h1 id="timerHeading">TOOTH BRUSHING TIMER</h1>
 
     <!-- Tooth image above the timer (hidden until timer starts) -->
     <div id="toothImage" style="display: none;"></div>
@@ -61,7 +61,6 @@
 
     // 2) Start Timer
     function startTimer() {
-      // Hide the start button after one click
       startBtnTimerPage.style.display = "none";
 
       if (!isPaused) {
@@ -72,11 +71,9 @@
       pauseButton.textContent = "Pause";
       isPaused = false;
 
-      // Show the tooth image and add hover animation
       toothImage.style.display = "block";
       toothImage.classList.add("bounceTooth");
 
-      // Clear existing intervals before starting new
       if (countdown) {
         clearInterval(countdown);
       }
@@ -130,12 +127,8 @@
       pauseButton.disabled = false;
       pauseButton.textContent = "Pause";
       isPaused = false;
-
-      // Hide tooth image
       toothImage.style.display = "none";
       toothImage.classList.remove("bounceTooth");
-
-      // Show the start button again so user can manually start the countdown
       startBtnTimerPage.style.display = "inline-block";
     }
   </script>
