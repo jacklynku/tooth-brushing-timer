@@ -2,7 +2,7 @@
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  background: #FFDDC1; /* Pastel peach */
+  background: #AEC6CF; /* Pastel blue background for entire page */
   color: black;
   margin: 0;
   padding: 20px;
@@ -21,14 +21,14 @@ body {
   margin-bottom: 20px;
   font-size: 3em;
   color: darkblue;
-  font-family: 'Press Start 2P', cursive; /* Retro font */
+  font-family: 'Press Start 2P', cursive; /* Retro font for heading */
   font-weight: bold;
 }
 
 /* Tooth image on landing page */
 #landingToothImage {
-  width: 200px;
-  height: 200px;
+  width: 300px; /* Larger size */
+  height: 300px;
   background: url('tooth.png') no-repeat center;
   background-size: contain;
   margin-bottom: 20px;
@@ -67,18 +67,13 @@ body {
   margin-top: 30px;
 }
 
+/* Countdown Timer - No background, digital font */
 #timer {
   font-size: 3em;
   font-family: 'Digital-7', sans-serif; /* Digital font */
   color: #FF6F61; /* Pastel red */
   font-weight: bold;
-  background-color: #AEC6CF; /* Pastel blue background */
-  padding: 20px;
-  border-radius: 10px;
   margin: 20px 0;
-  width: 150px; /* fixed width to keep it centered */
-  margin-left: auto;
-  margin-right: auto;
 }
 
 /* Container for Timer Buttons */
@@ -88,8 +83,8 @@ body {
 
 /* Tooth image above the timer (hidden until timer starts) */
 #toothImage {
-  width: 200px;
-  height: 200px;
+  width: 400px;   /* Much larger tooth image */
+  height: 400px;
   background: url('tooth.png') no-repeat center;
   background-size: contain;
   margin-bottom: 20px;
@@ -118,6 +113,7 @@ button {
   cursor: pointer;
   transition: 0.3s;
   font-family: Arial, sans-serif;
+  color: white; /* All buttons have white text now */
 }
 
 button:hover {
@@ -127,7 +123,6 @@ button:hover {
 /* Start (Brushing) Button */
 #startButton {
   background-color: #77DD77; /* Pastel green */
-  color: white;
 }
 #startButton:hover {
   background-color: #99E699;
@@ -136,7 +131,6 @@ button:hover {
 /* Pause Button */
 #pauseButton {
   background-color: #FFB347; /* Pastel orange */
-  color: black;
 }
 #pauseButton:hover {
   background-color: #FFC987;
@@ -145,7 +139,6 @@ button:hover {
 /* Stop Button */
 #stopButton {
   background-color: #FF6961; /* Pastel red */
-  color: white;
 }
 #stopButton:hover {
   background-color: #FF867C;
@@ -153,9 +146,8 @@ button:hover {
 
 /* Reset Button */
 #resetButton {
-  background-color: #AEC6CF; /* Pastel blue */
-  color: white;
+  background-color: black; /* Black reset button */
 }
 #resetButton:hover {
-  background-color: #C4D8E2;
+  background-color: #333; /* Darker hover effect */
 }
