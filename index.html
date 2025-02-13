@@ -34,6 +34,7 @@
       <button id="pauseButton" onclick="pauseTimer()" aria-label="Pause timer">Pause</button>
       <button id="stopButton" onclick="stopTimer()" aria-label="Stop timer">Stop</button>
       <button id="resetButton" onclick="resetTimer()" aria-label="Reset timer">Reset</button>
+      <button id="returnHomeButton" onclick="returnHome()" aria-label="Return to home">Return to Home</button>
     </div>
   </div>
 
@@ -112,6 +113,8 @@
     // 4) Stop Timer
     function stopTimer() {
       clearInterval(countdown);
+      timerDisplay.style.fontFamily = "Arial, sans-serif";
+      timerDisplay.style.color = "red";
       timerDisplay.textContent = "Stopped";
       stopButton.disabled = true;
       pauseButton.disabled = true;
@@ -122,6 +125,8 @@
     function resetTimer() {
       clearInterval(countdown);
       timerDisplay.textContent = "2:00";
+      timerDisplay.style.fontFamily = "'Digital-7', monospace";
+      timerDisplay.style.color = "#FF6F61";
       timeLeft = 120;
       stopButton.disabled = false;
       pauseButton.disabled = false;
@@ -130,6 +135,13 @@
       toothImage.style.display = "none";
       toothImage.classList.remove("bounceTooth");
       startBtnTimerPage.style.display = "inline-block";
+    }
+
+    // 6) Return to Home
+    function returnHome() {
+      timerPage.style.display = "none";
+      landingPage.style.display = "flex";
+      resetTimer(); // Reset the timer when returning home
     }
   </script>
 </body>
