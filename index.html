@@ -117,9 +117,7 @@
     // 4) Stop Timer
     function stopTimer() {
       clearInterval(countdown);
-      timerDisplay.style.fontFamily = "Arial, sans-serif";
-      timerDisplay.style.color = "red";
-      timerDisplay.textContent = "Stopped";
+      timerDisplay.textContent = "2:00"; // Reset to initial time
       stopButton.disabled = true;
       pauseButton.disabled = true;
       toothImage.classList.remove("bounceTooth");
