@@ -27,11 +27,12 @@ body {
 
 /* Tooth image on landing page */
 #landingToothImage {
-  width: 300px; /* Larger size */
-  height: 300px;
+  width: 400px;  /* Original size */
+  height: 400px; /* Original size */
   background: url('tooth.png') no-repeat center;
   background-size: contain;
   margin-bottom: 20px;
+  transform: scale(2); /* Doubles the size while keeping it responsive */
 }
 
 /* Start Button on Landing Page */
@@ -83,11 +84,12 @@ body {
 
 /* Tooth image above the timer (hidden until timer starts) */
 #toothImage {
-  width: 400px;   /* Much larger tooth image */
-  height: 400px;
+  width: 400px;  /* Original size */
+  height: 400px; /* Original size */
   background: url('tooth.png') no-repeat center;
   background-size: contain;
   margin-bottom: 20px;
+  transform: scale(2); /* Doubles the size while keeping it responsive */
 }
 
 /* Hover (bounce) animation for the tooth */
