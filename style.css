@@ -18,17 +18,17 @@ body {
 }
 
 .landing-header {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   font-size: 3em;
   color: darkblue;
-  font-family: 'Press Start 2P', cursive; /* Retro font for heading */
+  font-family: 'Press Start 2P'; /* Retro font for heading */
   font-weight: bold;
 }
 
 /* Tooth image on landing page */
 #landingToothImage {
-  width: 400px;  /* Original size */
-  height: 400px; /* Original size */
+  width: 800px;  /* Original size */
+  height: 800px; /* Original size */
   background: url('tooth.png') no-repeat center;
   background-size: contain;
   margin-bottom: 20px;
@@ -44,13 +44,13 @@ body {
   cursor: pointer;
   transition: 0.3s;
   /* More playful font for 'Start' */
-  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-family: 'Comic Sans MS', sans-serif;
   background-color: #AEC6CF; /* Pastel blue */
   color: white;
 }
 #landingStartButton:hover {
   transform: scale(1.05);
-  background-color: #C4D8E2; /* Lighter pastel blue */
+  background-color: #90EE90; /* Lighter pastel green */
 }
 
 /* ===== TIMER PAGE ===== */
@@ -63,7 +63,7 @@ body {
 #timerHeading {
   color: darkblue;
   font-size: 3em;
-  font-family: 'Press Start 2P', cursive; /* Retro font */
+  font-family: 'Press Start 2P'; /* Retro font */
   font-weight: bold;
   margin-top: 30px;
 }
