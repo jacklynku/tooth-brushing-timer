@@ -1,89 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tooth Brushing Timer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link href="https://fonts.cdnfonts.com/css/digital-7" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Let's Brush Our Teeth</title>
+  
+  <!-- Retro heading font -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <!-- Digital timer font -->
+  <link href="https://fonts.cdnfonts.com/css/digital-7" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-    <h1>Tooth Brushing Timer</h1>
-    <p>Brush for 2 minutes for a healthy smile!</p>
-    
-    <div id="timer-container">
-        <div id="timer">2:00</div>
-        <div id="tooth-image"></div>
+  <!-- Landing Page -->
+  <div id="landingPage">
+    <h1 class="landing-header">Let's Brush Our Teeth</h1>
+    <button id="landingStartButton" onclick="enterTimer()">Start</button>
+  </div>
+
+  <!-- Timer Page (hidden initially) -->
+  <div id="timerPage" style="display: none;">
+    <h1 id="timerHeading">Tooth Brushing Timer</h1>
+
+    <!-- Timer Container -->
+    <div id="timerContainer">
+      <div id="timer">2:00</div>
+      <!-- Hidden tooth image shown only when the timer starts -->
+      <div id="toothImage" style="display: none;"></div>
     </div>
 
-    <button id="startButton" onclick="startTimer()">Start Brushing</button>
-    <button id="pauseButton" onclick="pauseTimer()">Pause Brushing</button>
-    <button id="stopButton" onclick="stopTimer()">Stop Brushing</button>
+    <!-- Buttons -->
+    <button id="startButton" onclick="startTimer()">Start</button>
+    <button id="pauseButton" onclick="pauseTimer()">Pause</button>
+    <button id="stopButton" onclick="stopTimer()">Stop</button>
     <button id="resetButton" onclick="resetTimer()">Reset</button>
+  </div>
 
-    <script>
-        let countdown;
-        let timeLeft = 120;
-        let isPaused = false;
-        const timerDisplay = document.getElementById("timer");
-        const stopButton = document.getElementById("stopButton");
-        const pauseButton = document.getElementById("pauseButton");
+  <script>
+    let countdown;
+    let timeLeft = 120;
+    let isPaused = false;
 
-        function startTimer() {
-            if (!isPaused) {
-                timeLeft = 120;
-            }
-            stopButton.disabled = false;
-            pauseButton.textContent = "Pause Brushing";
-            isPaused = false;
+    // Elements
+    const timerDisplay = document.getElementById("timer");
+    const stopButton = document.getElementById("stopButton");
+    const pauseButton = document.getElementById("pauseButton");
+    const toothImage = document.getElementById("toothImage");
 
-            countdown = setInterval(() => {
-                if (!isPaused) {
-                    let minutes = Math.floor(timeLeft / 60);
-                    let seconds = timeLeft % 60;
-                    if (seconds < 10) seconds = "0" + seconds;
-                    timerDisplay.textContent = minutes + ":" + seconds;
+    // 1) Enter Timer Page from Landing
+    function enterTimer() {
+      document.getElementById("landingPage").style.display = "none";
+      document.getElementById("timerPage").style.display = "block";
+    }
 
-                    if (timeLeft <= 0) {
-                        clearInterval(countdown);
-                        timerDisplay.textContent = "Done!";
-                        alert("Great job! Your brushing is complete! 🎉");
-                        stopButton.disabled = true;
-                        pauseButton.disabled = true;
-                    }
-                    timeLeft--;
-                }
-            }, 1000);
-        }
+    // 2) Start Timer
+    function startTimer() {
+      // Show tooth image only when the timer starts
+      toothImage.style.display = "block";
 
-        function pauseTimer() {
-            if (!isPaused) {
-                isPaused = true;
-                pauseButton.textContent = "Resume Brushing";
-            } else {
-                isPaused = false;
-                pauseButton.textContent = "Pause Brushing";
-            }
-        }
+      // If timer was never started or after a reset, set to 120
+      if (!isPaused) {
+        timeLeft = 120;
+      }
+      stopButton.disabled = false;
+      pauseButton.textContent = "Pause";
+      isPaused = false;
 
-        function stopTimer() {
+      // Clear existing intervals before starting a new one
+      if (countdown) {
+        clearInterval(countdown);
+      }
+
+      countdown = setInterval(() => {
+        if (!isPaused) {
+          let minutes = Math.floor(timeLeft / 60);
+          let seconds = timeLeft % 60;
+          if (seconds < 10) seconds = "0" + seconds;
+          timerDisplay.textContent = minutes + ":" + seconds;
+
+          if (timeLeft <= 0) {
             clearInterval(countdown);
-            timerDisplay.textContent = "Stopped";
+            timerDisplay.textContent = "Done!";
+            alert("Great job! Your brushing is complete! 🎉");
             stopButton.disabled = true;
             pauseButton.disabled = true;
+          }
+          timeLeft--;
         }
+      }, 1000);
+    }
 
-        function resetTimer() {
-            clearInterval(countdown);
-            timerDisplay.textContent = "2:00";
-            timeLeft = 120;
-            stopButton.disabled = false;
-            pauseButton.disabled = false;
-            pauseButton.textContent = "Pause Brushing";
-        }
-    </script>
+    // 3) Pause Timer
+    function pauseTimer() {
+      if (!isPaused) {
+        isPaused = true;
+        pauseButton.textContent = "Resume";
+      } else {
+        isPaused = false;
+        pauseButton.textContent = "Pause";
+      }
+    }
 
+    // 4) Stop Timer
+    function stopTimer() {
+      clearInterval(countdown);
+      timerDisplay.textContent = "Stopped";
+      stopButton.disabled = true;
+      pauseButton.disabled = true;
+      // Keep tooth image displayed (or hide if desired)
+      // toothImage.style.display = "none";
+    }
+
+    // 5) Reset Timer
+    function resetTimer() {
+      clearInterval(countdown);
+      timerDisplay.textContent = "2:00";
+      timeLeft = 120;
+      stopButton.disabled = false;
+      pauseButton.disabled = false;
+      pauseButton.textContent = "Pause";
+      // Hide tooth image again on reset
+      toothImage.style.display = "none";
+      isPaused = false;
+    }
+  </script>
 </body>
 </html>
