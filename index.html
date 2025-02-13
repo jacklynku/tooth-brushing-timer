@@ -12,10 +12,16 @@
     <p>Brush for 2 minutes for a healthy smile!</p>
     
     <div id="timer">2:00</div>
+
+    <div id="timer-container">
+    <div id="timer">2:00</div>
+    <div id="tooth-image"></div>
+</div>
     
     <button onclick="startTimer()">Start Brushing</button>
     <button onclick="pauseTimer()" id="pauseButton" disabled>Pause Brushing</button>
     <button onclick="stopTimer()" id="stopButton" disabled>Stop Brushing</button>
+    <button id="restartButton" onclick="restartTimer()">Restart Brushing</button>
 
     <script>
         let countdown;
