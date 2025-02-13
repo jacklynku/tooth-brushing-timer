@@ -90,7 +90,7 @@ body {
 #toothImage {
   width: 200px;
   height: 200px;
-  background: url('tooth.jpg') no-repeat center;
+  background: url('tooth.png') no-repeat center;
   background-size: contain;
   margin-bottom: 20px;
 }
