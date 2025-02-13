@@ -33,12 +33,12 @@ body {
   height: 200px;
   background: url('tooth.png') no-repeat center;
   background-size: contain;
-  cursor: pointer; /* Make it look clickable */
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
 #landingToothImage:hover {
-  transform: scale(1.1); /* Add hover effect */
-  transition: transform 0.3s ease;
+  transform: scale(1.2); /* Magnify on hover */
 }
 
 /* Landing page button */
@@ -115,46 +115,4 @@ button:hover {
 #startButton:hover { background-color: #99E699; }
 
 #pauseButton { background-color: #FFB347; }
-#pauseButton:hover { background-color: #FFC987; }
-
-#stopButton { background-color: #FF6961; }
-#stopButton:hover { background-color: #FF867C; }
-
-#resetButton { background-color: black; }
-#resetButton:hover { background-color: #333; }
-
-/* Animation */
-@keyframes floatTooth {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-
-.bounceTooth {
-  animation: floatTooth 2s infinite ease-in-out;
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-  .landing-header {
-    font-size: 1.8em;
-  }
-
-  #landingToothImage {
-    width: 150px;
-    height: 150px;
-  }
-
-  #toothImage {
-    width: 120px;
-    height: 120px;
-  }
-
-  #timer {
-    font-size: 3em;
-  }
-
-  button {
-    padding: 8px 16px;
-    font-size: 0.9em;
-  }
-}
+#pauseButton:hover { background-color:
