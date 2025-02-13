@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Let's Brush Our Teeth</title>
   
-  <!-- Retro heading font -->
+  <!-- Retro heading font for headings -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <!-- Digital timer font -->
   <link href="https://fonts.cdnfonts.com/css/digital-7" rel="stylesheet">
@@ -24,7 +24,7 @@
   <div id="timerPage" style="display: none;">
     <h1 id="timerHeading">Tooth Brushing Timer</h1>
 
-    <!-- Tooth image above timer (hidden until timer starts) -->
+    <!-- Tooth image above the timer (hidden until timer starts) -->
     <div id="toothImage" style="display: none;"></div>
 
     <div id="timer">2:00</div>
@@ -54,7 +54,7 @@
     // 1) Go from Landing Page to Timer Page
     function enterTimer() {
       landingPage.style.display = "none";
-      timerPage.style.display = "flex";      // Switch to flex for centering
+      timerPage.style.display = "flex";
       timerPage.style.flexDirection = "column";
       timerPage.style.alignItems = "center";
     }
@@ -64,7 +64,6 @@
       // Hide the start button after one click
       startBtnTimerPage.style.display = "none";
 
-      // If timer was never started or after a reset, set to 120
       if (!isPaused) {
         timeLeft = 120;
       }
@@ -73,7 +72,7 @@
       pauseButton.textContent = "Pause";
       isPaused = false;
 
-      // Reveal tooth image and add hover animation
+      // Show the tooth image and add hover animation
       toothImage.style.display = "block";
       toothImage.classList.add("bounceTooth");
 
@@ -95,6 +94,7 @@
             alert("Great job! Your brushing is complete! 🎉");
             stopButton.disabled = true;
             pauseButton.disabled = true;
+            toothImage.classList.remove("bounceTooth");
           }
           timeLeft--;
         }
@@ -118,9 +118,7 @@
       timerDisplay.textContent = "Stopped";
       stopButton.disabled = true;
       pauseButton.disabled = true;
-      // Keep tooth image visible or hide it (choose preference)
-      // toothImage.style.display = "none";
-      toothImage.classList.remove("bounceTooth"); // remove bounce
+      toothImage.classList.remove("bounceTooth");
     }
 
     // 5) Reset Timer
@@ -133,7 +131,7 @@
       pauseButton.textContent = "Pause";
       isPaused = false;
 
-      // Hide the tooth image again
+      // Hide tooth image
       toothImage.style.display = "none";
       toothImage.classList.remove("bounceTooth");
 
