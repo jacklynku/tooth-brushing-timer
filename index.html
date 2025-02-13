@@ -16,6 +16,7 @@
   <!-- Landing Page -->
   <div id="landingPage">
     <h1 class="landing-header">Let's Brush Our Teeth</h1>
+    <div id="landingToothImage"></div>
     <button id="landingStartButton" onclick="enterTimer()">Start</button>
   </div>
 
@@ -23,18 +24,17 @@
   <div id="timerPage" style="display: none;">
     <h1 id="timerHeading">Tooth Brushing Timer</h1>
 
-    <!-- Timer Container -->
-    <div id="timerContainer">
-      <div id="timer">2:00</div>
-      <!-- Hidden tooth image shown only when the timer starts -->
-      <div id="toothImage" style="display: none;"></div>
-    </div>
+    <!-- Tooth image above timer (hidden until timer starts) -->
+    <div id="toothImage" style="display: none;"></div>
 
-    <!-- Buttons -->
-    <button id="startButton" onclick="startTimer()">Start</button>
-    <button id="pauseButton" onclick="pauseTimer()">Pause</button>
-    <button id="stopButton" onclick="stopTimer()">Stop</button>
-    <button id="resetButton" onclick="resetTimer()">Reset</button>
+    <div id="timer">2:00</div>
+
+    <div id="timerButtons">
+      <button id="startButton" onclick="startTimer()">Start</button>
+      <button id="pauseButton" onclick="pauseTimer()">Pause</button>
+      <button id="stopButton" onclick="stopTimer()">Stop</button>
+      <button id="resetButton" onclick="resetTimer()">Reset</button>
+    </div>
   </div>
 
   <script>
@@ -43,31 +43,41 @@
     let isPaused = false;
 
     // Elements
+    const landingPage = document.getElementById("landingPage");
+    const timerPage = document.getElementById("timerPage");
     const timerDisplay = document.getElementById("timer");
+    const toothImage = document.getElementById("toothImage");
     const stopButton = document.getElementById("stopButton");
     const pauseButton = document.getElementById("pauseButton");
-    const toothImage = document.getElementById("toothImage");
+    const startBtnTimerPage = document.getElementById("startButton");
 
-    // 1) Enter Timer Page from Landing
+    // 1) Go from Landing Page to Timer Page
     function enterTimer() {
-      document.getElementById("landingPage").style.display = "none";
-      document.getElementById("timerPage").style.display = "block";
+      landingPage.style.display = "none";
+      timerPage.style.display = "flex";      // Switch to flex for centering
+      timerPage.style.flexDirection = "column";
+      timerPage.style.alignItems = "center";
     }
 
     // 2) Start Timer
     function startTimer() {
-      // Show tooth image only when the timer starts
-      toothImage.style.display = "block";
+      // Hide the start button after one click
+      startBtnTimerPage.style.display = "none";
 
       // If timer was never started or after a reset, set to 120
       if (!isPaused) {
         timeLeft = 120;
       }
       stopButton.disabled = false;
+      pauseButton.disabled = false;
       pauseButton.textContent = "Pause";
       isPaused = false;
 
-      // Clear existing intervals before starting a new one
+      // Reveal tooth image and add hover animation
+      toothImage.style.display = "block";
+      toothImage.classList.add("bounceTooth");
+
+      // Clear existing intervals before starting new
       if (countdown) {
         clearInterval(countdown);
       }
@@ -108,8 +118,9 @@
       timerDisplay.textContent = "Stopped";
       stopButton.disabled = true;
       pauseButton.disabled = true;
-      // Keep tooth image displayed (or hide if desired)
+      // Keep tooth image visible or hide it (choose preference)
       // toothImage.style.display = "none";
+      toothImage.classList.remove("bounceTooth"); // remove bounce
     }
 
     // 5) Reset Timer
@@ -120,9 +131,14 @@
       stopButton.disabled = false;
       pauseButton.disabled = false;
       pauseButton.textContent = "Pause";
-      // Hide tooth image again on reset
-      toothImage.style.display = "none";
       isPaused = false;
+
+      // Hide the tooth image again
+      toothImage.style.display = "none";
+      toothImage.classList.remove("bounceTooth");
+
+      // Show the start button again so user can manually start the countdown
+      startBtnTimerPage.style.display = "inline-block";
     }
   </script>
 </body>
