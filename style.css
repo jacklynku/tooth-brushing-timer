@@ -11,7 +11,7 @@ body {
 
 /* Custom cursor for landing page */
 #landingPage {
-  cursor: url('toothbrush.png') 16 16, auto;
+  cursor: url('toothbrush.png'), auto;
 }
 
 /* ===== LANDING PAGE ===== */
@@ -70,8 +70,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  position: relative;
+  gap: 10px; /* Reduced spacing */
 }
 
 #timerHeading {
@@ -87,13 +86,22 @@ body {
   height: 300px;
   background: url('tooth.png') no-repeat center;
   background-size: contain;
+  margin-bottom: 10px; /* Reduced spacing */
 }
 
 #timer {
   font-size: 4em;
   font-family: 'Digital-7 Mono', monospace;
-  color: #BF40BF; /* Updated timer color */
+  color: #B39EB5; /* Updated timer color */
   margin: 10px 0;
+}
+
+.brush-message {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.5em;
+  color: darkblue;
+  display: block;
+  margin-top: 10px;
 }
 
 #timerButtons {
@@ -143,6 +151,36 @@ button:hover {
 
 #returnHomeButton:hover {
   color: #555;
+}
+
+/* Timer Log Table */
+#timerLog {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 400px;
+}
+
+#timerLog h2 {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1.2em;
+  color: darkblue;
+  margin-bottom: 10px;
+}
+
+#timerLog table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#timerLog th,
+#timerLog td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  font-family: 'Silkscreen', cursive;
+}
+
+#timerLog th {
+  background-color: #f2f2f2;
 }
 
 /* Animation */
