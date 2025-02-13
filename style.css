@@ -65,7 +65,7 @@ body {
 
 #timerHeading {
   font-family: 'Press Start 2P', cursive;
-  font-size: 1.5em;
+  font-size: 2.5em;
   color: darkblue;
   margin: 0;
   text-transform: uppercase;
@@ -82,8 +82,8 @@ body {
 /* Timer */
 #timer {
   font-size: 4em;
-  font-family: 'Digital-7', monospace;
-  color: #FF6F61;
+  font-family: 'DS-Digital', monospace;
+  color: #A1B8E6;
   margin: 10px 0;
 }
 
