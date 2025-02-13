@@ -1,1 +1,1 @@
-# Toothbrush-Timer
+# tooth-brushing-timer
