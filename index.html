@@ -18,6 +18,8 @@
     <h1 class="landing-header">Let's Brush Our Teeth</h1>
     <div id="landingToothImage" onclick="enterTimer()"></div>
     <button id="landingStartButton" onclick="enterTimer()" aria-label="Start brushing timer">Start</button>
+    <!-- Calendar Icon on Landing Page -->
+    <button id="landingCalendarButton" onclick="openCalendarPopup()" aria-label="Open calendar" style="position: absolute; top: 20px; right: 20px; font-size: 1.5em; border: none; background: none; cursor: pointer;">🗓️</button>
   </div>
 
   <!-- Timer Page (hidden initially) -->
@@ -25,8 +27,8 @@
     <!-- Return to Home Button -->
     <button id="returnHomeButton" onclick="returnHome()" aria-label="Return to home" style="background: url('home.png') no-repeat center; background-size: contain; width: 24px; height: 24px; border: none; padding: 0;"></button>
 
-    <!-- Calendar Icon -->
-    <button id="calendarButton" onclick="openCalendarPopup()" aria-label="Open calendar" style="background: url('calendar.png') no-repeat center; background-size: contain; width: 24px; height: 24px; border: none; padding: 0; margin-top: 10px;"></button>
+    <!-- Calendar Icon on Timer Page -->
+    <button id="calendarButton" onclick="openCalendarPopup()" aria-label="Open calendar" style="position: absolute; top: 60px; right: 20px; font-size: 1.5em; border: none; background: none; cursor: pointer;">🗓️</button>
 
     <h1 id="timerHeading">TOOTH BRUSHING TIMER</h1>
 
@@ -49,7 +51,7 @@
         <thead>
           <tr>
             <th>Action</th>
-            <th style="padding-right: 30px;">Time</th> <!-- Increased spacing -->
+            <th style="padding-right: 30px;">Time</th>
             <th>Elapsed (s)</th>
           </tr>
         </thead>
@@ -136,7 +138,7 @@
             timerDisplay.style.color = "#00FF00"; // Green
             timerDisplay.classList.add("pulsate");
           } else {
-            timerDisplay.style.color = "#DAEAF6"; // Default color
+            timerDisplay.style.color = "#B39EB5"; // Pastel purple
             timerDisplay.classList.remove("pulsate");
           }
 
@@ -185,7 +187,7 @@
     function resetTimer() {
       clearInterval(countdown);
       timerDisplay.textContent = "2:00";
-      timerDisplay.style.color = "#DAEAF6"; // Reset to default color
+      timerDisplay.style.color = "#B39EB5"; // Reset to pastel purple
       timerDisplay.classList.remove("pulsate");
       timeLeft = 120;
       stopButton.disabled = false;
