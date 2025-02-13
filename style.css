@@ -6,7 +6,7 @@ body {
   color: black;
   margin: 0;
   padding: 10px;
-  overflow: hidden;
+  /* overflow: hidden; */ /* Removed to enable scrolling */
 }
 
 /* Custom cursor for landing page */
@@ -173,6 +173,9 @@ button:hover {
   margin-top: 20px;
   width: 100%;
   max-width: 400px;
+  max-height: 200px; /* Added for scrolling */
+  overflow-y: auto; /* Added for scrolling */
+  border: 1px solid #ddd; /* Optional: Add a border for better visibility */
 }
 
 #brushLog h2 {
@@ -259,96 +262,4 @@ button:hover {
   color: white;
   background-color: #FF6F61;
   margin-top: 10px;
-}
-
-#closeCalendarPopup:hover {
-  background-color: #FF867C;
-}
-
-/* Animation */
-@keyframes floatTooth {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-
-.bounceTooth {
-  animation: floatTooth 2s infinite ease-in-out;
-}
-
-/* ===== MOBILE STYLES ===== */
-@media (max-width: 768px) {
-  .landing-header {
-    font-size: 1.8em;
-    padding: 0 10px;
-  }
-
-  #landingToothImage {
-    width: 200px;
-    height: 200px;
-  }
-
-  #landingStartButton {
-    padding: 10px 20px;
-    font-size: 1em;
-  }
-
-  #timerHeading {
-    font-size: 1.2em;
-  }
-
-  #toothImage {
-    width: 200px;
-    height: 200px;
-  }
-
-  #timer {
-    font-size: 3em;
-  }
-
-  button {
-    padding: 10px 20px;
-    font-size: 0.9em;
-    margin: 5px;
-  }
-
-  #returnHomeButton {
-    top: 10px;
-    right: 10px;
-    font-size: 1.2em;
-    padding: 8px;
-  }
-}
-
-@media (max-width: 480px) {
-  .landing-header {
-    font-size: 1.5em;
-  }
-
-  #landingToothImage {
-    width: 150px;
-    height: 150px;
-  }
-
-  #timerHeading {
-    font-size: 1em;
-  }
-
-  #toothImage {
-    width: 150px;
-    height: 150px;
-  }
-
-  #timer {
-    font-size: 2.5em;
-  }
-
-  button {
-    padding: 8px 16px;
-    font-size: 0.8em;
-  }
-
-  #returnHomeButton {
-    font-size: 1em;
-    padding: 6px;
-  }
 }
