@@ -25,7 +25,7 @@
   <!-- Timer Page (hidden initially) -->
   <div id="timerPage" style="display: none;">
     <!-- Return to Home Button -->
-    <button id="returnHomeButton" onclick="returnHome()" aria-label="Return to home" style="background: url('home.png') no-repeat center; background-size: contain; width: 24px; height: 24px; border: none; padding: 0;"></button>
+    <button id="returnHomeButton" onclick="returnHome()" aria-label="Return to home" style="background: url('home.png') no-repeat center; background-size: contain; width: 32px; height: 32px; border: none; padding: 0;"></button>
 
     <!-- Calendar Icon on Timer Page -->
     <button id="calendarButton" onclick="openCalendarPopup()" aria-label="Open calendar" style="position: absolute; top: 60px; right: 20px; font-size: 1.5em; border: none; background: none; cursor: pointer;">🗓️</button>
@@ -71,7 +71,7 @@
         <thead>
           <tr>
             <th>Date</th>
-            <th>Time</th>
+            <th>Time Started</th>
             <th>Time Spent (s)</th>
           </tr>
         </thead>
@@ -89,6 +89,18 @@
     let isStopped = false;
     let startTime;
     let brushHistory = [];
+    let cleanImages = ["clean1.png", "clean2.png", "clean3.png", "clean4.png", "clean5.png"];
+    let cleanImageIndex = 0;
+
+    // Reset brush history every 7 days
+    function resetBrushHistory() {
+      const now = new Date();
+      const lastReset = localStorage.getItem("lastReset");
+      if (!lastReset || (now - new Date(lastReset)) / (1000 * 60 * 60 * 24) >= 7) {
+        brushHistory = [];
+        localStorage.setItem("lastReset", now.toISOString());
+      }
+    }
 
     // Elements
     const landingPage = document.getElementById("landingPage");
@@ -120,7 +132,7 @@
       startTime = Date.now();
 
       toothImage.style.display = "block";
-      toothImage.classList.add("bounceTooth");
+      toothImage.style.backgroundImage = `url('tooth.png')`;
 
       if (countdown) {
         clearInterval(countdown);
@@ -133,22 +145,19 @@
           if (seconds < 10) seconds = "0" + seconds;
           timerDisplay.textContent = minutes + ":" + seconds;
 
-          // Change color and pulsate when 10 seconds remain
-          if (timeLeft <= 10) {
-            timerDisplay.style.color = "#00FF00"; // Green
-            timerDisplay.classList.add("pulsate");
-          } else {
-            timerDisplay.style.color = "#B39EB5"; // Pastel purple
-            timerDisplay.classList.remove("pulsate");
+          // Magnify animation from 5 seconds left
+          if (timeLeft <= 5) {
+            timerDisplay.classList.add("magnify");
+            toothImage.style.backgroundImage = `url('${cleanImages[cleanImageIndex]}')`;
+            cleanImageIndex = (cleanImageIndex + 1) % cleanImages.length;
           }
 
           if (timeLeft <= 0) {
             clearInterval(countdown);
-            timerDisplay.textContent = "Done!";
-            timerDisplay.innerHTML = "Done!<br><span class='brush-message'>You are taking great care of your pearly whites!</span>";
+            timerDisplay.textContent = "0:00";
             stopButton.disabled = true;
             pauseButton.disabled = true;
-            toothImage.classList.remove("bounceTooth");
+            toothImage.style.backgroundImage = `url('clean5.png')`;
             logAction("Completed", 120); // Log completion
           }
           timeLeft--;
@@ -188,7 +197,7 @@
       clearInterval(countdown);
       timerDisplay.textContent = "2:00";
       timerDisplay.style.color = "#B39EB5"; // Reset to pastel purple
-      timerDisplay.classList.remove("pulsate");
+      timerDisplay.classList.remove("magnify");
       timeLeft = 120;
       stopButton.disabled = false;
       pauseButton.disabled = true;
@@ -197,7 +206,7 @@
       isPaused = false;
       isStopped = false;
       toothImage.style.display = "none";
-      toothImage.classList.remove("bounceTooth");
+      toothImage.style.backgroundImage = `url('tooth.png')`;
       startBtnTimerPage.style.display = "inline-block";
       logBody.innerHTML = ""; // Clear Brush Log
     }
@@ -217,8 +226,8 @@
       const row = `<tr><td>${action}</td><td>${timeString}</td><td>${elapsedSeconds}</td></tr>`;
       logBody.insertAdjacentHTML("afterbegin", row);
 
-      // Add to brush history if action is "Completed"
-      if (action === "Completed") {
+      // Add to brush history if action is "Completed" or "Stopped"
+      if (action === "Completed" || action === "Stopped") {
         const dateString = now.toLocaleDateString();
         brushHistory.push({ date: dateString, time: timeString, elapsed: elapsedSeconds });
       }
@@ -249,6 +258,9 @@
         calendarLogBody.insertAdjacentHTML("beforeend", row);
       });
     }
+
+    // Reset brush history every 7 days
+    resetBrushHistory();
   </script>
 </body>
 </html>
