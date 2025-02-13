@@ -1,89 +1,89 @@
-body {
-    font-family: 'Comic Sans MS', cursive, sans-serif;
-    text-align: center;
-    background: lightblue;
-    color: black;
-    padding: 20px;
-    position: relative;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tooth Brushing Timer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/digital-7" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-h1 {
-    margin-top: 50px;
-    color: darkblue;
-    font-size: 2.5em; /* Increased heading size */
-}
+    <h1>Tooth Brushing Timer</h1>
+    <p>Brush for 2 minutes for a healthy smile!</p>
+    
+    <div id="timer-container">
+        <div id="timer">2:00</div>
+        <div id="tooth-image"></div>
+    </div>
 
-#timer-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    gap: 20px; /* Ensures spacing between timer and image */
-}
+    <button id="startButton" onclick="startTimer()">Start Brushing</button>
+    <button id="pauseButton" onclick="pauseTimer()">Pause Brushing</button>
+    <button id="stopButton" onclick="stopTimer()">Stop Brushing</button>
+    <button id="resetButton" onclick="resetTimer()">Reset</button>
 
-#timer {
-    font-size: 3em;
-    font-weight: bold;
-    color: red;
-    margin: 20px 0;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+    <script>
+        let countdown;
+        let timeLeft = 120;
+        let isPaused = false;
+        const timerDisplay = document.getElementById("timer");
+        const stopButton = document.getElementById("stopButton");
+        const pauseButton = document.getElementById("pauseButton");
 
-#tooth-image {
-    background: url('tooth.jpg') no-repeat center;
-    background-size: contain;
-    width: 150px; /* Larger than buttons */
-    height: 150px;
-    transform: rotate(30deg);
-    position: relative;
-}
+        function startTimer() {
+            if (!isPaused) {
+                timeLeft = 120;
+            }
+            stopButton.disabled = false;
+            pauseButton.textContent = "Pause Brushing";
+            isPaused = false;
 
-button {
-    padding: 10px 20px; /* Made buttons smaller */
-    font-size: 1.2em; /* Reduced button text size */
-    margin: 10px;
-    font-family: 'Comic Sans MS', cursive, sans-serif;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.3s;
-}
+            countdown = setInterval(() => {
+                if (!isPaused) {
+                    let minutes = Math.floor(timeLeft / 60);
+                    let seconds = timeLeft % 60;
+                    if (seconds < 10) seconds = "0" + seconds;
+                    timerDisplay.textContent = minutes + ":" + seconds;
 
-#startButton {
-    background-color: green;
-    color: white;
-}
+                    if (timeLeft <= 0) {
+                        clearInterval(countdown);
+                        timerDisplay.textContent = "Done!";
+                        alert("Great job! Your brushing is complete! 🎉");
+                        stopButton.disabled = true;
+                        pauseButton.disabled = true;
+                    }
+                    timeLeft--;
+                }
+            }, 1000);
+        }
 
-#startButton:hover {
-    background-color: darkgreen;
-}
+        function pauseTimer() {
+            if (!isPaused) {
+                isPaused = true;
+                pauseButton.textContent = "Resume Brushing";
+            } else {
+                isPaused = false;
+                pauseButton.textContent = "Pause Brushing";
+            }
+        }
 
-#pauseButton {
-    background-color: orange;
-    color: black;
-}
+        function stopTimer() {
+            clearInterval(countdown);
+            timerDisplay.textContent = "Stopped";
+            stopButton.disabled = true;
+            pauseButton.disabled = true;
+        }
 
-#pauseButton:hover {
-    background-color: darkorange;
-}
+        function resetTimer() {
+            clearInterval(countdown);
+            timerDisplay.textContent = "2:00";
+            timeLeft = 120;
+            stopButton.disabled = false;
+            pauseButton.disabled = false;
+            pauseButton.textContent = "Pause Brushing";
+        }
+    </script>
 
-#stopButton {
-    background-color: red;
-    color: white;
-}
-
-#stopButton:hover {
-    background-color: darkred;
-}
-
-#restartButton {
-    background-color: blue;
-    color: white;
-}
-
-#restartButton:hover {
-    background-color: darkblue;
-}
+</body>
+</html>
