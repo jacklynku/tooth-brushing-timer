@@ -23,7 +23,10 @@
   <!-- Timer Page (hidden initially) -->
   <div id="timerPage" style="display: none;">
     <!-- Return to Home Button -->
-    <button id="returnHomeButton" onclick="returnHome()" aria-label="Return to home">home.png</button>
+    <button id="returnHomeButton" onclick="returnHome()" aria-label="Return to home" style="background: url('home.png') no-repeat center; background-size: contain; width: 24px; height: 24px; border: none; padding: 0;"></button>
+
+    <!-- Calendar Icon -->
+    <button id="calendarButton" onclick="openCalendarPopup()" aria-label="Open calendar" style="background: url('calendar.png') no-repeat center; background-size: contain; width: 24px; height: 24px; border: none; padding: 0; margin-top: 10px;"></button>
 
     <h1 id="timerHeading">TOOTH BRUSHING TIMER</h1>
 
@@ -46,11 +49,32 @@
         <thead>
           <tr>
             <th>Action</th>
-            <th>Time</th>
+            <th style="padding-right: 30px;">Time</th> <!-- Increased spacing -->
+            <th>Elapsed (s)</th>
           </tr>
         </thead>
         <tbody id="logBody">
           <!-- Log entries will be added here -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Calendar Popup -->
+  <div id="calendarPopup" style="display: none;">
+    <div id="calendarPopupContent">
+      <h2>Brushing History</h2>
+      <button id="closeCalendarPopup" onclick="closeCalendarPopup()" aria-label="Close calendar">Close</button>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Time Spent (s)</th>
+          </tr>
+        </thead>
+        <tbody id="calendarLogBody">
+          <!-- Calendar log entries will be added here -->
         </tbody>
       </table>
     </div>
@@ -61,6 +85,8 @@
     let timeLeft = 120;
     let isPaused = false;
     let isStopped = false;
+    let startTime;
+    let brushHistory = [];
 
     // Elements
     const landingPage = document.getElementById("landingPage");
@@ -71,6 +97,8 @@
     const pauseButton = document.getElementById("pauseButton");
     const startBtnTimerPage = document.getElementById("startButton");
     const logBody = document.getElementById("logBody");
+    const calendarPopup = document.getElementById("calendarPopup");
+    const calendarLogBody = document.getElementById("calendarLogBody");
 
     // 1) Go from Landing Page to Timer Page
     function enterTimer() {
@@ -85,12 +113,9 @@
       startBtnTimerPage.style.display = "none";
       pauseButton.disabled = false;
       stopButton.disabled = false;
-
-      if (!isPaused && !isStopped) {
-        timeLeft = 120;
-      }
       isPaused = false;
       isStopped = false;
+      startTime = Date.now();
 
       toothImage.style.display = "block";
       toothImage.classList.add("bounceTooth");
@@ -106,22 +131,30 @@
           if (seconds < 10) seconds = "0" + seconds;
           timerDisplay.textContent = minutes + ":" + seconds;
 
+          // Change color and pulsate when 10 seconds remain
+          if (timeLeft <= 10) {
+            timerDisplay.style.color = "#00FF00"; // Green
+            timerDisplay.classList.add("pulsate");
+          } else {
+            timerDisplay.style.color = "#DAEAF6"; // Default color
+            timerDisplay.classList.remove("pulsate");
+          }
+
           if (timeLeft <= 0) {
             clearInterval(countdown);
             timerDisplay.textContent = "Done!";
-            if (timeLeft === 0) {
-              timerDisplay.innerHTML = "Done!<br><span class='brush-message'>You are taking great care of your pearly whites!</span>";
-            }
+            timerDisplay.innerHTML = "Done!<br><span class='brush-message'>You are taking great care of your pearly whites!</span>";
             stopButton.disabled = true;
             pauseButton.disabled = true;
             toothImage.classList.remove("bounceTooth");
+            logAction("Completed", 120); // Log completion
           }
           timeLeft--;
         }
       }, 1000);
 
       // Log the start time
-      logAction("Started");
+      logAction("Started", 0);
     }
 
     // 3) Pause Timer
@@ -130,12 +163,12 @@
         isPaused = true;
         pauseButton.textContent = "Resume";
         pauseButton.style.backgroundColor = "#77DD77"; // Green for Resume
-        logAction("Paused");
+        logAction("Paused", getElapsedTime());
       } else {
         isPaused = false;
         pauseButton.textContent = "Pause";
         pauseButton.style.backgroundColor = "#FFB347"; // Orange for Pause
-        logAction("Resumed");
+        logAction("Resumed", getElapsedTime());
       }
     }
 
@@ -144,16 +177,16 @@
       clearInterval(countdown);
       isStopped = true;
       stopButton.disabled = true;
-      pauseButton.disabled = false;
-      logAction("Stopped");
+      pauseButton.disabled = true; // Disable pause button after stopping
+      logAction("Stopped", getElapsedTime());
     }
 
     // 5) Reset Timer
     function resetTimer() {
       clearInterval(countdown);
       timerDisplay.textContent = "2:00";
-      timerDisplay.style.fontFamily = "'Digital-7 Mono', monospace";
-      timerDisplay.style.color = "#B39EB5"; // Updated timer color
+      timerDisplay.style.color = "#DAEAF6"; // Reset to default color
+      timerDisplay.classList.remove("pulsate");
       timeLeft = 120;
       stopButton.disabled = false;
       pauseButton.disabled = true;
@@ -164,7 +197,7 @@
       toothImage.style.display = "none";
       toothImage.classList.remove("bounceTooth");
       startBtnTimerPage.style.display = "inline-block";
-      logAction("Reset");
+      logBody.innerHTML = ""; // Clear Brush Log
     }
 
     // 6) Return to Home
@@ -172,14 +205,47 @@
       timerPage.style.display = "none";
       landingPage.style.display = "flex";
       resetTimer();
+      logBody.innerHTML = ""; // Clear Brush Log
     }
 
-    // Log actions to the table
-    function logAction(action) {
+    // 7) Log actions to the table
+    function logAction(action, elapsedSeconds) {
       const now = new Date();
       const timeString = now.toLocaleTimeString();
-      const row = `<tr><td>${action}</td><td>${timeString}</td></tr>`;
+      const row = `<tr><td>${action}</td><td>${timeString}</td><td>${elapsedSeconds}</td></tr>`;
       logBody.insertAdjacentHTML("afterbegin", row);
+
+      // Add to brush history if action is "Completed"
+      if (action === "Completed") {
+        const dateString = now.toLocaleDateString();
+        brushHistory.push({ date: dateString, time: timeString, elapsed: elapsedSeconds });
+      }
+    }
+
+    // 8) Calculate elapsed time in seconds
+    function getElapsedTime() {
+      const currentTime = Date.now();
+      return Math.floor((currentTime - startTime) / 1000);
+    }
+
+    // 9) Open Calendar Popup
+    function openCalendarPopup() {
+      calendarPopup.style.display = "flex";
+      updateCalendarLog();
+    }
+
+    // 10) Close Calendar Popup
+    function closeCalendarPopup() {
+      calendarPopup.style.display = "none";
+    }
+
+    // 11) Update Calendar Log
+    function updateCalendarLog() {
+      calendarLogBody.innerHTML = ""; // Clear existing log
+      brushHistory.forEach(entry => {
+        const row = `<tr><td>${entry.date}</td><td>${entry.time}</td><td>${entry.elapsed}</td></tr>`;
+        calendarLogBody.insertAdjacentHTML("beforeend", row);
+      });
     }
   </script>
 </body>
