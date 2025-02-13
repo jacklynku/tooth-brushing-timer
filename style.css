@@ -14,12 +14,6 @@ body {
   cursor: url('toothbrush.png') 16 16, auto;
 }
 
-/* Mirror the cursor image */
-#landingPage {
-  cursor: url('toothbrush.png') 16 16, auto;
-  transform: scaleX(-1); /* Mirror the cursor */
-}
-
 /* ===== LANDING PAGE ===== */
 #landingPage {
   display: flex;
