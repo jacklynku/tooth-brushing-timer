@@ -14,25 +14,53 @@
     <div id="timer">2:00</div>
     
     <button onclick="startTimer()">Start Brushing</button>
+    <button onclick="pauseTimer()" id="pauseButton" disabled>Pause Brushing</button>
+    <button onclick="stopTimer()" id="stopButton" disabled>Stop Brushing</button>
 
     <script>
+        let countdown;
+        let timeLeft = 120;
+        let isPaused = false;
+        const timerDisplay = document.getElementById("timer");
+        const pauseButton = document.getElementById("pauseButton");
+        const stopButton = document.getElementById("stopButton");
+
         function startTimer() {
-            let timeLeft = 120;
-            const timerDisplay = document.getElementById("timer");
-            
-            const countdown = setInterval(() => {
-                let minutes = Math.floor(timeLeft / 60);
-                let seconds = timeLeft % 60;
-                if (seconds < 10) seconds = "0" + seconds;
-                timerDisplay.textContent = minutes + ":" + seconds;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(countdown);
-                    timerDisplay.textContent = "Done!";
-                    alert("Great job! Your brushing is complete! 🎉");
+            if (countdown) clearInterval(countdown);
+            isPaused = false;
+            pauseButton.disabled = false;
+            stopButton.disabled = false;
+            countdown = setInterval(() => {
+                if (!isPaused) {
+                    let minutes = Math.floor(timeLeft / 60);
+                    let seconds = timeLeft % 60;
+                    if (seconds < 10) seconds = "0" + seconds;
+                    timerDisplay.textContent = minutes + ":" + seconds;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(countdown);
+                        timerDisplay.textContent = "Done!";
+                        alert("Great job! Your brushing is complete! 🎉");
+                        pauseButton.disabled = true;
+                        stopButton.disabled = true;
+                    }
+                    timeLeft--;
                 }
-                timeLeft--;
             }, 1000);
+        }
+
+        function pauseTimer() {
+            isPaused = !isPaused;
+            pauseButton.textContent = isPaused ? "Resume Brushing" : "Pause Brushing";
+        }
+
+        function stopTimer() {
+            clearInterval(countdown);
+            timerDisplay.textContent = "Stopped";
+            timeLeft = 120;
+            pauseButton.disabled = true;
+            stopButton.disabled = true;
+            pauseButton.textContent = "Pause Brushing";
         }
     </script>
 
