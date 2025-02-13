@@ -65,7 +65,7 @@
     // 2) Start Timer
     function startTimer() {
       startBtnTimerPage.style.display = "none";
-      pauseButton.disabled = false; // Enable pause button when timer starts
+      pauseButton.disabled = false;
 
       if (!isPaused) {
         timeLeft = 120;
@@ -130,12 +130,12 @@
       clearInterval(countdown);
       timerDisplay.textContent = "2:00";
       timerDisplay.style.fontFamily = "'Digital-7 Mono', monospace";
-      timerDisplay.style.color = "#FF6F61";
+      timerDisplay.style.color = "#BF40BF"; // Updated timer color
       timeLeft = 120;
       stopButton.disabled = false;
-      pauseButton.disabled = true; // Disable pause button on reset
+      pauseButton.disabled = true;
       pauseButton.textContent = "Pause";
-      pauseButton.style.backgroundColor = "#FFB347"; // Reset to orange
+      pauseButton.style.backgroundColor = "#FFB347";
       isPaused = false;
       toothImage.style.display = "none";
       toothImage.classList.remove("bounceTooth");
@@ -146,7 +146,7 @@
     function returnHome() {
       timerPage.style.display = "none";
       landingPage.style.display = "flex";
-      resetTimer(); // Reset the timer when returning home
+      resetTimer();
     }
   </script>
 </body>
