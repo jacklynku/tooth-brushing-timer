@@ -1,4 +1,4 @@
-/* ===== BODY STYLING ===== */
+/* ===== GENERAL STYLES ===== */
 body {
   font-family: 'Silkscreen', cursive;
   text-align: center;
@@ -7,7 +7,7 @@ body {
   margin: 0;
   padding: 10px;
   overflow: hidden;
-  cursor: url('toothbrush.png'), auto; /* Custom toothbrush cursor */
+  cursor: url('toothbrush.png'), auto;
 }
 
 /* ===== LANDING PAGE ===== */
@@ -16,8 +16,9 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
   gap: 20px;
+  padding: 20px;
 }
 
 .landing-header {
@@ -27,10 +28,9 @@ body {
   font-family: 'Press Start 2P', cursive;
 }
 
-/* Tooth image on landing page */
 #landingToothImage {
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 300px;
   background: url('tooth.png') no-repeat center;
   background-size: contain;
   cursor: pointer;
@@ -38,10 +38,9 @@ body {
 }
 
 #landingToothImage:hover {
-  transform: scale(1.2); /* Magnify on hover */
+  transform: scale(1.2);
 }
 
-/* Landing page button */
 #landingStartButton {
   padding: 12px 24px;
   font-size: 1.1em;
@@ -68,6 +67,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 20px;
+  position: relative;
 }
 
 #timerHeading {
@@ -78,27 +78,30 @@ body {
   text-transform: uppercase;
 }
 
-/* Tooth image */
 #toothImage {
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 300px;
   background: url('tooth.png') no-repeat center;
   background-size: contain;
 }
 
-/* Timer */
 #timer {
   font-size: 4em;
-  font-family: 'Digital-7', monospace;
+  font-family: 'Digital-7 Mono', monospace;
   color: #FF6F61;
   margin: 10px 0;
 }
 
-/* Buttons */
+#timerButtons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
 button {
-  padding: 10px 20px;
+  padding: 12px 24px;
   font-size: 1em;
-  margin: 5px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -115,21 +118,25 @@ button:hover {
 #startButton:hover { background-color: #99E699; }
 
 #pauseButton { background-color: #FFB347; }
-#pauseButton:hover { background-color:
+#pauseButton:hover { background-color: #FFC987; }
 
-  #stopButton { background-color: #FF6961; }
+#stopButton { background-color: #FF6961; }
 #stopButton:hover { background-color: #FF867C; }
 
-#resetButton { background-color: black; }
-#resetButton:hover { background-color: #333; }
+#resetButton { background-color: #555; }
+#resetButton:hover { background-color: #777; }
 
 #returnHomeButton {
-  background-color: #64B5F6; /* Pastel blue */
-  margin-top: 20px;
+  background-color: #64B5F6;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px;
+  font-size: 1.5em;
 }
 
 #returnHomeButton:hover {
-  background-color: #42A5F5; /* Slightly darker pastel blue */
+  background-color: #42A5F5;
 }
 
 /* Animation */
@@ -142,20 +149,32 @@ button:hover {
   animation: floatTooth 2s infinite ease-in-out;
 }
 
-/* Mobile Responsiveness */
+/* ===== MOBILE STYLES ===== */
 @media (max-width: 768px) {
+  /* Adjust landing page */
   .landing-header {
     font-size: 1.8em;
+    padding: 0 10px;
   }
 
   #landingToothImage {
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
+  }
+
+  #landingStartButton {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+
+  /* Adjust timer page */
+  #timerHeading {
+    font-size: 1.2em;
   }
 
   #toothImage {
-    width: 120px;
-    height: 120px;
+    width: 200px;
+    height: 200px;
   }
 
   #timer {
@@ -163,7 +182,50 @@ button:hover {
   }
 
   button {
-    padding: 8px 16px;
+    padding: 10px 20px;
     font-size: 0.9em;
+    margin: 5px;
+  }
+
+  #returnHomeButton {
+    top: 10px;
+    right: 10px;
+    font-size: 1.2em;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Further adjustments for very small screens */
+  .landing-header {
+    font-size: 1.5em;
+  }
+
+  #landingToothImage {
+    width: 150px;
+    height: 150px;
+  }
+
+  #timerHeading {
+    font-size: 1em;
+  }
+
+  #toothImage {
+    width: 150px;
+    height: 150px;
+  }
+
+  #timer {
+    font-size: 2.5em;
+  }
+
+  button {
+    padding: 8px 16px;
+    font-size: 0.8em;
+  }
+
+  #returnHomeButton {
+    font-size: 1em;
+    padding: 6px;
   }
 }
