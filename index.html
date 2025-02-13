@@ -38,12 +38,29 @@
       <button id="stopButton" onclick="stopTimer()" aria-label="Stop timer">Stop</button>
       <button id="resetButton" onclick="resetTimer()" aria-label="Reset timer">Reset</button>
     </div>
+
+    <!-- Timer Log Table -->
+    <div id="timerLog">
+      <h2>Timer Log</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody id="logBody">
+          <!-- Log entries will be added here -->
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <script>
     let countdown;
     let timeLeft = 120;
     let isPaused = false;
+    let isStopped = false;
 
     // Elements
     const landingPage = document.getElementById("landingPage");
@@ -53,6 +70,7 @@
     const stopButton = document.getElementById("stopButton");
     const pauseButton = document.getElementById("pauseButton");
     const startBtnTimerPage = document.getElementById("startButton");
+    const logBody = document.getElementById("logBody");
 
     // 1) Go from Landing Page to Timer Page
     function enterTimer() {
@@ -66,13 +84,13 @@
     function startTimer() {
       startBtnTimerPage.style.display = "none";
       pauseButton.disabled = false;
+      stopButton.disabled = false;
 
-      if (!isPaused) {
+      if (!isPaused && !isStopped) {
         timeLeft = 120;
       }
-      stopButton.disabled = false;
-      pauseButton.textContent = "Pause";
       isPaused = false;
+      isStopped = false;
 
       toothImage.style.display = "block";
       toothImage.classList.add("bounceTooth");
@@ -82,7 +100,7 @@
       }
 
       countdown = setInterval(() => {
-        if (!isPaused) {
+        if (!isPaused && !isStopped) {
           let minutes = Math.floor(timeLeft / 60);
           let seconds = timeLeft % 60;
           if (seconds < 10) seconds = "0" + seconds;
@@ -91,7 +109,9 @@
           if (timeLeft <= 0) {
             clearInterval(countdown);
             timerDisplay.textContent = "Done!";
-            alert("Great job! Your brushing is complete! 🎉");
+            if (timeLeft === 0) {
+              timerDisplay.innerHTML = "Done!<br><span class='brush-message'>You are taking great care of your pearly whites!</span>";
+            }
             stopButton.disabled = true;
             pauseButton.disabled = true;
             toothImage.classList.remove("bounceTooth");
@@ -99,6 +119,9 @@
           timeLeft--;
         }
       }, 1000);
+
+      // Log the start time
+      logAction("Started");
     }
 
     // 3) Pause Timer
@@ -107,20 +130,22 @@
         isPaused = true;
         pauseButton.textContent = "Resume";
         pauseButton.style.backgroundColor = "#77DD77"; // Green for Resume
+        logAction("Paused");
       } else {
         isPaused = false;
         pauseButton.textContent = "Pause";
         pauseButton.style.backgroundColor = "#FFB347"; // Orange for Pause
+        logAction("Resumed");
       }
     }
 
     // 4) Stop Timer
     function stopTimer() {
       clearInterval(countdown);
-      timerDisplay.textContent = "2:00"; // Reset to initial time
+      isStopped = true;
       stopButton.disabled = true;
-      pauseButton.disabled = true;
-      toothImage.classList.remove("bounceTooth");
+      pauseButton.disabled = false;
+      logAction("Stopped");
     }
 
     // 5) Reset Timer
@@ -128,16 +153,18 @@
       clearInterval(countdown);
       timerDisplay.textContent = "2:00";
       timerDisplay.style.fontFamily = "'Digital-7 Mono', monospace";
-      timerDisplay.style.color = "#BF40BF"; // Updated timer color
+      timerDisplay.style.color = "#B39EB5"; // Updated timer color
       timeLeft = 120;
       stopButton.disabled = false;
       pauseButton.disabled = true;
       pauseButton.textContent = "Pause";
       pauseButton.style.backgroundColor = "#FFB347";
       isPaused = false;
+      isStopped = false;
       toothImage.style.display = "none";
       toothImage.classList.remove("bounceTooth");
       startBtnTimerPage.style.display = "inline-block";
+      logAction("Reset");
     }
 
     // 6) Return to Home
@@ -145,6 +172,14 @@
       timerPage.style.display = "none";
       landingPage.style.display = "flex";
       resetTimer();
+    }
+
+    // Log actions to the table
+    function logAction(action) {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString();
+      const row = `<tr><td>${action}</td><td>${timeString}</td></tr>`;
+      logBody.insertAdjacentHTML("afterbegin", row);
     }
   </script>
 </body>
