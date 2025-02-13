@@ -82,8 +82,8 @@ body {
 }
 
 #toothImage {
-  width: 300px;
-  height: 300px;
+  width: 400px;
+  height: 400px;
   background: url('tooth.png') no-repeat center;
   background-size: contain;
   margin-bottom: 5px; /* Reduced spacing */
@@ -102,22 +102,14 @@ body {
   margin: 5px 0; /* Reduced spacing */
 }
 
-/* Pulsate animation for last 10 seconds */
-@keyframes pulsate {
+/* Magnify animation for last 5 seconds */
+@keyframes magnify {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.1); }
 }
 
-.pulsate {
-  animation: pulsate 1s infinite;
-}
-
-.brush-message {
-  font-family: 'Press Start 2P', cursive;
-  font-size: 0.5em;
-  color: darkblue;
-  display: block;
-  margin-top: 10px;
+.magnify {
+  animation: magnify 1s infinite;
 }
 
 #timerButtons {
@@ -161,8 +153,8 @@ button:hover {
   right: 20px;
   padding: 0;
   border: none;
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
 }
 
 #calendarButton, #landingCalendarButton {
@@ -284,4 +276,79 @@ button:hover {
 }
 
 /* ===== MOBILE STYLES ===== */
-@media (max-width: 768
+@media (max-width: 768px) {
+  .landing-header {
+    font-size: 1.8em;
+    padding: 0 10px;
+  }
+
+  #landingToothImage {
+    width: 200px;
+    height: 200px;
+  }
+
+  #landingStartButton {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+
+  #timerHeading {
+    font-size: 1.2em;
+  }
+
+  #toothImage {
+    width: 200px;
+    height: 200px;
+  }
+
+  #timer {
+    font-size: 3em;
+  }
+
+  button {
+    padding: 10px 20px;
+    font-size: 0.9em;
+    margin: 5px;
+  }
+
+  #returnHomeButton {
+    top: 10px;
+    right: 10px;
+    font-size: 1.2em;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .landing-header {
+    font-size: 1.5em;
+  }
+
+  #landingToothImage {
+    width: 150px;
+    height: 150px;
+  }
+
+  #timerHeading {
+    font-size: 1em;
+  }
+
+  #toothImage {
+    width: 150px;
+    height: 150px;
+  }
+
+  #timer {
+    font-size: 2.5em;
+  }
+
+  button {
+    padding: 8px 16px;
+    font-size: 0.8em;
+  }
+
+  #returnHomeButton {
+    font-size: 1em;
+    padding: 6px;
+  }
+}
