@@ -6,7 +6,6 @@ body {
   color: black;
   margin: 0;
   padding: 10px;
-  /* overflow: hidden; */ /* Removed to enable scrolling if needed */
 }
 
 /* Custom cursor for landing page */
@@ -41,8 +40,9 @@ body {
   transition: transform 0.3s ease;
 }
 
+/* Slightly smaller scale on hover (just 1.05) */
 #landingToothImage:hover {
-  transform: scale(1.1); /* Reduced from 1.2 */
+  transform: scale(1.05);
 }
 
 #landingStartButton {
@@ -91,28 +91,18 @@ body {
   transition: transform 0.3s ease;
 }
 
-#toothImage:hover {
-  /* No scale */
-}
-
-/* Tiny 'twitch' on click */
+/* Removed scale on click, just a quick twitch (horizontal shift). */
 #toothImage:active {
-  animation: toothTwitch 0.2s;
+  animation: toothTwitch 0.15s ease-in-out;
 }
 
-/* Keyframes for a small rotate twitch */
+/* Keyframes for twitch effect (horizontal shake). Adjust as desired. */
 @keyframes toothTwitch {
-  0% { transform: rotate(0deg); }
-  30% { transform: rotate(5deg); }
-  60% { transform: rotate(-5deg); }
-  100% { transform: rotate(0deg); }
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(-3px, 0); }
 }
 
-#toothImage:active {
-  animation: cleanCycle 2s steps(6) infinite;
-}
-
-/* Clean cycle animation (optional) */
+/* Clean cycle frames (optional if user holds down tooth) */
 @keyframes cleanCycle {
   0%   { background: url('clean1.png') no-repeat center; }
   20%  { background: url('clean2.png') no-repeat center; }
@@ -125,7 +115,7 @@ body {
 /* Countdown Timer */
 #timer {
   font-size: 4em;
-  font-family: 'Digital-7 Mono', monospace;
+  font-family: 'Digital-7 Mono', monospace; /* Digital font */
   color: #B39EB5;
   margin: 5px 0;
 }
@@ -177,8 +167,6 @@ button:hover {
 
 #stopButton {
   background-color: #FF6F61;
-  pointer-events: none;
-  opacity: 0.5;
 }
 #stopButton:hover {
   background-color: #FF867C;
@@ -317,6 +305,27 @@ button:hover {
 
 #closeCalendarPopup:hover {
   background-color: #333;
+}
+
+/* (NEW) Stop Confirmation Popup Overlay */
+#stopPopup {
+  display: none;
+  position: fixed;
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center; 
+  align-items: center;
+}
+#stopPopupContent {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
 }
 
 /* Subtle float animation if needed */
