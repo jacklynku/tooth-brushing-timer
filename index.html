@@ -134,14 +134,14 @@
       // Show tooth immediately
       toothImage.style.display = "block";
       toothImage.style.backgroundImage = "url('tooth.png')";
-      cycleIndex = 0; // Reset manual cycle to 0
+      cycleIndex = 0; // Reset manual cycle
     }
 
     // 2) Start Timer
     function startTimer() {
       startBtnTimerPage.style.display = "none";
       pauseButton.disabled = false;
-      stopButton.disabled = false; // Enable stop at any time
+      stopButton.disabled = false; // Now user can stop any time
       isPaused = false;
       isStopped = false;
       startTime = Date.now();
@@ -164,12 +164,11 @@
             cleanImageIndex = (cleanImageIndex + 1) % cleanImages.length;
           }
 
-          // If time hits 0, that means we're done brushing
           if (timeLeft <= 0) {
             clearInterval(countdown);
             timerDisplay.textContent = "0:00";
             pauseButton.disabled = true;
-            stopButton.disabled = false; 
+            stopButton.disabled = false;
             toothImage.style.backgroundImage = `url('clean5.png')`;
             logAction("Completed", 120);
           }
@@ -203,6 +202,7 @@
       stopButton.disabled = true;
       pauseButton.disabled = true;
       timerDisplay.classList.remove("magnify");
+      timerDisplay.textContent = "Stopped"; /* <--- Show 'Stopped' immediately */
       logAction("Stopped", getElapsedTime());
     }
 
@@ -222,7 +222,7 @@
       toothImage.style.display = "block";
       toothImage.style.backgroundImage = "url('tooth.png')";
       cleanImageIndex = 0;
-      cycleIndex = 0; // Reset manual cycle to 0
+      cycleIndex = 0;
 
       startBtnTimerPage.style.display = "inline-block";
       stopButton.disabled = true;
@@ -244,7 +244,6 @@
       const row = `<tr><td>${action}</td><td>${timeString}</td><td>${elapsedSeconds}</td></tr>`;
       logBody.insertAdjacentHTML("afterbegin", row);
 
-      // Add to brush history if action is "Completed" or "Stopped"
       if (action === "Completed" || action === "Stopped") {
         const dateString = now.toLocaleDateString();
         brushHistory.push({ date: dateString, time: timeString, elapsed: elapsedSeconds });
@@ -277,7 +276,7 @@
 
     // 11) Update Calendar Log
     function updateCalendarLog() {
-      calendarLogBody.innerHTML = ""; // Clear existing log
+      calendarLogBody.innerHTML = "";
       brushHistory.forEach(entry => {
         const row = `<tr><td>${entry.date}</td><td>${entry.time}</td><td>${entry.elapsed}</td></tr>`;
         calendarLogBody.insertAdjacentHTML("beforeend", row);
