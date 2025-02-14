@@ -174,8 +174,11 @@
           if (timeLeft <= 0) {
             clearInterval(countdown);
             timerDisplay.textContent = "0:00";
+            // Disable pause and stop buttons and hide them so only Resume & Reset remain
             pauseButton.disabled = true;
             stopButton.disabled = true;
+            pauseButton.style.display = "none";
+            stopButton.style.display = "none";
             toothImage.style.backgroundImage = "url('clean5.png')";
             // Log Completed only once when timeLeft hits 0
             if (timeLeft === 0) {
@@ -192,6 +195,9 @@
       startBtnTimerPage.style.display = "none";
       pauseButton.disabled = false;
       stopButton.disabled = false; // Enable stop button now that timer starts
+      // Ensure timer control buttons are visible
+      pauseButton.style.display = "inline-block";
+      stopButton.style.display = "inline-block";
       isPaused = false;
       isStopped = false;
       startTime = Date.now();
@@ -253,6 +259,10 @@
       timerDisplay.textContent = `You only brushed for ${brushedTime} seconds. Brush for ${timeRemaining} more seconds to ensure cavity prevention.`;
       logAction("Stopped early", brushedTime);
 
+      // Hide pause and stop buttons so that only Resume and Reset remain
+      pauseButton.style.display = "none";
+      stopButton.style.display = "none";
+
       // Show resume button after ending
       document.getElementById("resumeAfterEndButton").style.display = "inline-block";
     }
@@ -263,6 +273,9 @@
       isStopped = false;
       pauseButton.disabled = false;
       stopButton.disabled = false;
+      // Restore the display of pause and stop buttons
+      pauseButton.style.display = "inline-block";
+      stopButton.style.display = "inline-block";
       // Resume the countdown from current timeLeft
       startCountdown();
       logAction("Resumed", getElapsedTime());
@@ -290,6 +303,9 @@
       logBody.innerHTML = "";
       // Also hide resumeAfterEndButton if visible
       document.getElementById("resumeAfterEndButton").style.display = "none";
+      // Re-display pause and stop buttons if they were hidden
+      pauseButton.style.display = "inline-block";
+      stopButton.style.display = "inline-block";
       // Disable stop button again
       stopButton.disabled = true;
     }
