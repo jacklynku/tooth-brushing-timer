@@ -1,377 +1,438 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Let's Brush Our Teeth</title>
-  
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <link href="https://fonts.cdnfonts.com/css/digital-7-mono" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
+/* ===== GENERAL STYLES ===== */
+body {
+  font-family: 'Silkscreen', cursive;
+  text-align: center;
+  background: #B3E5FC; /* Bright pastel blue background */
+  color: black;
+  margin: 0;
+  padding: 10px;
+}
 
-  <!-- Landing Page -->
-  <div id="landingPage">
-    <h1 class="landing-header">Let's Brush Our Teeth</h1>
-    <div id="landingToothImage" onclick="enterTimer()"></div>
-    <button id="landingStartButton" onclick="enterTimer()" aria-label="Start brushing timer">Enter Timer</button>
-    <!-- Calendar Icon on Landing Page -->
-    <button id="landingCalendarButton" onclick="openCalendarPopup()" aria-label="Open calendar" style="position: absolute; top: 20px; right: 20px; font-size: 1.5em; border: none; background: none; cursor: pointer;">
-      <img src="calendar.png" alt="Calendar" style="width: 24px; height: 24px;">
-    </button>
-  </div>
+/* Custom cursor for landing page */
+#landingPage {
+  cursor: url('toothbrush.png'), auto;
+}
 
-  <!-- Timer Page (hidden initially) -->
-  <div id="timerPage" style="display: none;">
-    <!-- Return to Home Button -->
-    <button id="returnHomeButton" onclick="returnHome()" aria-label="Return to home" style="background: url('home.png') no-repeat center; background-size: contain; width: 32px; height: 32px; border: none; padding: 0;"></button>
+/* ===== LANDING PAGE ===== */
+#landingPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 20px;
+  padding: 20px;
+}
 
-    <!-- Calendar Icon on Timer Page -->
-    <button id="calendarButton" onclick="openCalendarPopup()" aria-label="Open calendar" style="position: absolute; top: 60px; right: 20px; font-size: 1.5em; border: none; background: none; cursor: pointer;">
-      <img src="calendar.png" alt="Calendar" style="width: 24px; height: 24px;">
-    </button>
+.landing-header {
+  margin: 0;
+  font-size: 2.5em;
+  color: darkblue;
+  font-family: 'Press Start 2P', cursive;
+}
 
-    <h1 id="timerHeading">TOOTH BRUSHING TIMER</h1>
+#landingToothImage {
+  width: 300px;
+  height: 300px;
+  background: url('tooth.png') no-repeat center;
+  background-size: contain;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
 
-    <!-- Tooth image above the timer (click to cycle images) -->
-    <div id="toothImage" style="display: none;" onclick="cycleToothImage()"></div>
+/* Slightly smaller scale on hover (just 1.05) */
+#landingToothImage:hover {
+  transform: scale(1.05);
+}
 
-    <div id="timer">2:00</div>
+#landingStartButton {
+  padding: 12px 24px;
+  font-size: 1.1em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-family: 'Silkscreen', cursive;
+  color: white;
+  background-color: #77DD77; /* Pastel green */
+}
 
-    <div id="timerButtons">
-      <button id="startButton" onclick="startTimer()" aria-label="Start timer">Start</button>
-      <button id="pauseButton" onclick="pauseTimer()" aria-label="Pause timer" disabled>Pause</button>
-      <!-- Stop button now disabled until timer starts -->
-      <button id="stopButton" onclick="stopConfirmation()" aria-label="Stop timer" disabled>Stop</button>
-      <button id="resetButton" onclick="resetTimer()" aria-label="Reset timer">Reset</button>
-    </div>
+#landingStartButton:hover {
+  background-color: #99E699;
+  transform: scale(1.05);
+}
 
-    <!-- Resume After End Button (hidden initially) -->
-    <button id="resumeAfterEndButton" onclick="resumeAfterEnd()" style="display: none;">Resume Brushing</button>
+/* ===== TIMER PAGE ===== */
+#timerPage {
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
 
-    <!-- Brush Log Table -->
-    <div id="brushLog">
-      <h2>Brush Log</h2>
-      <div style="max-height: 200px; overflow-y: auto;">
-        <table>
-          <thead>
-            <tr>
-              <th>Action</th>
-              <th style="padding-right: 30px;">Time</th>
-              <th>Elapsed (s)</th>
-            </tr>
-          </thead>
-          <tbody id="logBody">
-            <!-- Log entries will be added here -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+#timerHeading {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1.5em;
+  color: darkblue;
+  margin: 0;
+  text-transform: uppercase;
+}
 
-  <!-- Calendar Popup -->
-  <div id="calendarPopup" style="display: none;">
-    <div id="calendarPopupContent">
-      <h2>Brushing History</h2>
-      <button id="closeCalendarPopup" onclick="closeCalendarPopup()" aria-label="Close calendar">Close</button>
-      <!-- Calendar log container with scroll -->
-      <div id="calendarLogContainer">
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Time Started</th>
-              <th>Time Spent (s)</th>
-            </tr>
-          </thead>
-          <tbody id="calendarLogBody">
-            <!-- Calendar log entries will be added here -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+#toothImage {
+  width: 400px;
+  height: 400px;
+  background: url('tooth.png') no-repeat center;
+  background-size: contain;
+  margin-bottom: 5px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
 
-  <!-- Stop Confirmation Popup -->
-  <div id="stopPopup" style="display: none;" class="popup-overlay">
-    <div id="stopPopupContent" class="popup-content">
-      <h2>are you sure? reminder: brushing for 2 minutes prevents cavities</h2>
-      <button id="resumeButton" style="background-color: green; color: white; padding: 10px; margin: 5px;" onclick="resumeBrushing()">Resume</button>
-      <button id="endButton" style="background-color: red; color: white; padding: 10px; margin: 5px;" onclick="confirmStop()">End</button>
-    </div>
-  </div>
+/* Removed scale on click, just a quick twitch (horizontal shift). */
+#toothImage:active {
+  animation: toothTwitch 0.15s ease-in-out;
+}
 
-  <script>
-    let countdown;
-    let timeLeft = 120;
-    let isPaused = false;
-    let isStopped = false;
-    let startTime;
-    let brushHistory = [];
-    let cleanImages = ["clean1.png", "clean2.png", "clean3.png", "clean4.png", "clean5.png"];
-    let cleanImageIndex = 0;
+/* Keyframes for twitch effect (horizontal shake). Adjust as desired. */
+@keyframes toothTwitch {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(-3px, 0); }
+}
 
-    // Additional array & index for manual click cycling
-    let cycleImages = ["tooth.png", ...cleanImages];
-    let cycleIndex = 0;
+/* Clean cycle frames (optional if user holds down tooth) */
+@keyframes cleanCycle {
+  0%   { background: url('clean1.png') no-repeat center; }
+  20%  { background: url('clean2.png') no-repeat center; }
+  40%  { background: url('clean3.png') no-repeat center; }
+  60%  { background: url('clean4.png') no-repeat center; }
+  80%  { background: url('clean5.png') no-repeat center; }
+  100% { background: url('tooth.png') no-repeat center; }
+}
 
-    // Reset brush history every 7 days
-    function resetBrushHistory() {
-      const now = new Date();
-      const lastReset = localStorage.getItem("lastReset");
-      if (!lastReset || (now - new Date(lastReset)) / (1000 * 60 * 60 * 24) >= 7) {
-        brushHistory = [];
-        localStorage.setItem("lastReset", now.toISOString());
-      }
-    }
+/* Countdown Timer */
+#timer {
+  font-size: 4em;
+  font-family: 'Digital-7 Mono', monospace; /* Digital font */
+  color: #B39EB5;
+  margin: 5px 0;
+}
 
-    // Elements
-    const landingPage = document.getElementById("landingPage");
-    const timerPage = document.getElementById("timerPage");
-    const timerDisplay = document.getElementById("timer");
-    const toothImage = document.getElementById("toothImage");
-    const stopButton = document.getElementById("stopButton");
-    const pauseButton = document.getElementById("pauseButton");
-    const startBtnTimerPage = document.getElementById("startButton");
-    const logBody = document.getElementById("logBody");
-    const calendarPopup = document.getElementById("calendarPopup");
-    const calendarLogBody = document.getElementById("calendarLogBody");
-    const stopPopup = document.getElementById("stopPopup");
+/* Magnify animation for last 5 seconds */
+@keyframes magnify {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.1); }
+}
+.magnify {
+  animation: magnify 1s infinite;
+}
 
-    // 1) Go from Landing Page to Timer Page
-    function enterTimer() {
-      landingPage.style.display = "none";
-      timerPage.style.display = "flex";
-      timerPage.style.flexDirection = "column";
-      timerPage.style.alignItems = "center";
+#timerButtons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
 
-      // Show tooth immediately
-      toothImage.style.display = "block";
-      toothImage.style.backgroundImage = "url('tooth.png')";
-      cycleIndex = 0;
-    }
+button {
+  padding: 12px 24px;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-family: 'Silkscreen', cursive;
+  color: white;
+}
 
-    // Function to start the countdown interval
-    function startCountdown() {
-      startTime = Date.now();
-      countdown = setInterval(() => {
-        if (!isPaused && !isStopped) {
-          let minutes = Math.floor(timeLeft / 60);
-          let seconds = timeLeft % 60;
-          seconds = seconds < 10 ? "0" + seconds : seconds;
-          timerDisplay.textContent = minutes + ":" + seconds;
+button:hover {
+  transform: scale(1.05);
+}
 
-          // Magnify + rotate clean images for last 5s
-          if (timeLeft <= 5) {
-            timerDisplay.classList.add("magnify");
-            toothImage.style.backgroundImage = "url('" + cleanImages[cleanImageIndex] + "')";
-            cleanImageIndex = (cleanImageIndex + 1) % cleanImages.length;
-          }
+#startButton {
+  background-color: #77DD77;
+}
+#startButton:hover {
+  background-color: #99E699;
+}
 
-          if (timeLeft <= 0) {
-            clearInterval(countdown);
-            timerDisplay.textContent = "0:00";
-            // Disable pause and stop buttons and hide them so only Resume & Reset remain
-            pauseButton.disabled = true;
-            stopButton.disabled = true;
-            pauseButton.style.display = "none";
-            stopButton.style.display = "none";
-            toothImage.style.backgroundImage = "url('clean5.png')";
-            // Log Completed only once when timeLeft hits 0
-            if (timeLeft === 0) {
-              logAction("Completed", 120);
-            }
-          }
-          timeLeft--;
-        }
-      }, 1000);
-    }
+#pauseButton {
+  background-color: #FFB347;
+}
+#pauseButton:hover {
+  background-color: #FFC987;
+}
 
-    // 2) Start Timer
-    function startTimer() {
-      startBtnTimerPage.style.display = "none";
-      pauseButton.disabled = false;
-      stopButton.disabled = false; // Enable stop button now that timer starts
-      // Ensure timer control buttons are visible
-      pauseButton.style.display = "inline-block";
-      stopButton.style.display = "inline-block";
-      isPaused = false;
-      isStopped = false;
-      startTime = Date.now();
-      if (countdown) {
-        clearInterval(countdown);
-      }
-      startCountdown();
-      logAction("Started", 0);
-    }
+#stopButton {
+  background-color: #FF6F61;
+}
+#stopButton:hover {
+  background-color: #FF867C;
+}
 
-    // 3) Pause Timer
-    function pauseTimer() {
-      if (!isPaused) {
-        isPaused = true;
-        pauseButton.textContent = "Resume";
-        pauseButton.style.backgroundColor = "#77DD77"; // Green for Resume
-        logAction("Paused", getElapsedTime());
-      } else {
-        isPaused = false;
-        pauseButton.textContent = "Pause";
-        pauseButton.style.backgroundColor = "#FFB347"; // Orange for Pause
-        logAction("Resumed", getElapsedTime());
-      }
-    }
+/* Reset Button */
+#resetButton {
+  background-color: #000000;
+}
+#resetButton:hover {
+  background-color: #333;
+}
 
-    // ===== Stop Confirmation Popup =====
-    function stopConfirmation() {
-      if (!isPaused && !isStopped) {
-        clearInterval(countdown);
-        isPaused = true;
-      }
-      stopPopup.style.display = "flex";
-    }
+/* Resume After End Button */
+#resumeAfterEndButton {
+  background-color: #77DD77 !important;
+  border: none;
+  border-radius: 5px;
+  padding: 12px 24px;
+  font-size: 1em;
+  font-family: 'Silkscreen', cursive;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+#resumeAfterEndButton:hover {
+  background-color: #99E699;
+}
 
-    // Called when the Resume button in the popup is clicked
-    function resumeBrushing() {
-      stopPopup.style.display = "none";
-      isPaused = false;
-      // Resume the countdown from where it left off
-      startCountdown();
-      stopButton.disabled = false;
-      pauseButton.disabled = false;
-      pauseButton.textContent = "Pause";
-      pauseButton.style.backgroundColor = "#FFB347";
-      logAction("Resumed", getElapsedTime());
-    }
+/* Return to Home Button */
+#returnHomeButton {
+  background-color: transparent;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 0;
+  border: none;
+  width: 32px;
+  height: 32px;
+}
 
-    // Called when the End button in the popup is clicked
-    function confirmStop() {
-      stopPopup.style.display = "none";
-      clearInterval(countdown);
-      isStopped = true;
-      pauseButton.disabled = true;
-      stopButton.disabled = true;
-      timerDisplay.classList.remove("magnify");
+/* Calendar Buttons */
+#calendarButton,
+#landingCalendarButton {
+  background-color: transparent;
+  position: absolute;
+  top: 60px; /* Below the home button */
+  right: 20px;
+  padding: 0;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+}
 
-      const brushedTime = getElapsedTime();
-      const timeRemaining = timeLeft;
-      timerDisplay.textContent = `You only brushed for ${brushedTime} seconds. Brush for ${timeRemaining} more seconds to ensure cavity prevention.`;
-      logAction("Stopped early", brushedTime);
+/* Brush Log Table */
+#brushLog {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 400px;
+}
 
-      // Hide pause and stop buttons so that only Resume and Reset remain
-      pauseButton.style.display = "none";
-      stopButton.style.display = "none";
+#brushLog h2 {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1.2em;
+  color: black;
+  margin-bottom: 10px;
+}
 
-      // Show resume button after ending
-      document.getElementById("resumeAfterEndButton").style.display = "inline-block";
-    }
+#brushLog table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: transparent;
+}
 
-    // Function to resume timer after ending
-    function resumeAfterEnd() {
-      document.getElementById("resumeAfterEndButton").style.display = "none";
-      isStopped = false;
-      pauseButton.disabled = false;
-      stopButton.disabled = false;
-      // Restore the display of pause and stop buttons
-      pauseButton.style.display = "inline-block";
-      stopButton.style.display = "inline-block";
-      // Resume the countdown from current timeLeft
-      startCountdown();
-      logAction("Resumed", getElapsedTime());
-    }
+#brushLog th,
+#brushLog td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  font-family: 'Silkscreen', cursive;
+  background-color: transparent;
+  text-align: left;
+}
 
-    // 5) Reset Timer - only resets, does not auto-start
-    function resetTimer() {
-      clearInterval(countdown);
-      timerDisplay.textContent = "2:00";
-      timerDisplay.style.color = "#B39EB5";
-      timerDisplay.classList.remove("magnify");
-      timeLeft = 120;
-      pauseButton.disabled = true;
-      pauseButton.textContent = "Pause";
-      pauseButton.style.backgroundColor = "#FFB347";
-      isPaused = false;
-      isStopped = false;
+#brushLog th {
+  background-color: rgba(242, 242, 242, 0.5);
+}
 
-      toothImage.style.display = "block";
-      toothImage.style.backgroundImage = "url('tooth.png')";
-      cleanImageIndex = 0;
-      cycleIndex = 0;
+#brushLog div {
+  max-height: 200px;
+  overflow-y: auto;
+}
 
-      startBtnTimerPage.style.display = "inline-block";
-      logBody.innerHTML = "";
-      // Also hide resumeAfterEndButton if visible
-      document.getElementById("resumeAfterEndButton").style.display = "none";
-      // Re-display pause and stop buttons if they were hidden
-      pauseButton.style.display = "inline-block";
-      stopButton.style.display = "inline-block";
-      // Disable stop button again
-      stopButton.disabled = true;
-    }
+/* Calendar Popup */
+#calendarPopup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
 
-    // 6) Return to Home
-    function returnHome() {
-      timerPage.style.display = "none";
-      landingPage.style.display = "flex";
-      resetTimer();
-      logBody.innerHTML = "";
-    }
+#calendarPopupContent {
+  background: #B3E5FC;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 100%;
+}
 
-    // 7) Log actions to the table
-    function logAction(action, elapsedSeconds) {
-      const now = new Date();
-      const timeString = now.toLocaleTimeString();
-      const row = "<tr><td>" + action + "</td><td>" + timeString + "</td><td>" + elapsedSeconds + "</td></tr>";
-      logBody.insertAdjacentHTML("afterbegin", row);
+#calendarPopupContent h2 {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1.2em;
+  color: darkblue;
+  margin-bottom: 10px;
+}
 
-      if (action === "Completed" || action === "Stopped early") {
-        const dateString = now.toLocaleDateString();
-        brushHistory.push({ date: dateString, time: timeString, elapsed: elapsedSeconds });
-      }
-    }
+#calendarPopupContent table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: transparent;
+}
 
-    // 8) Calculate elapsed time in seconds
-    function getElapsedTime() {
-      const currentTime = Date.now();
-      return Math.floor((currentTime - startTime) / 1000);
-    }
+#calendarPopupContent th,
+#calendarPopupContent td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  font-family: 'Silkscreen', cursive;
+  background-color: transparent;
+  text-align: left;
+}
 
-    // 9) Open Calendar Popup
-    function openCalendarPopup() {
-      calendarPopup.style.display = "flex";
-      updateCalendarLog();
-    }
+#calendarPopupContent th {
+  background-color: rgba(242, 242, 242, 0.5);
+}
 
-    // 10) Close Calendar Popup
-    function closeCalendarPopup() {
-      calendarPopup.style.display = "none";
-    }
+#closeCalendarPopup {
+  padding: 10px 20px;
+  font-size: 1em;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-family: 'Silkscreen', cursive;
+  color: white;
+  background-color: black;
+  margin-top: 10px;
+}
 
-    // Close popup by clicking outside the calendar content
-    calendarPopup.addEventListener('click', function(e) {
-      if (e.target.id === 'calendarPopup') {
-        closeCalendarPopup();
-      }
-    });
+#closeCalendarPopup:hover {
+  background-color: #333;
+}
 
-    // 11) Update Calendar Log
-    function updateCalendarLog() {
-      calendarLogBody.innerHTML = "";
-      brushHistory.forEach(entry => {
-        const row = "<tr><td>" + entry.date + "</td><td>" + entry.time + "</td><td>" + entry.elapsed + "</td></tr>";
-        calendarLogBody.insertAdjacentHTML("beforeend", row);
-      });
-    }
+/* Calendar log container for scrolling */
+#calendarLogContainer {
+  max-height: 300px;
+  overflow-y: auto;
+}
 
-    // MANUAL function: cycle tooth images on click
-    function cycleToothImage() {
-      cycleIndex = (cycleIndex + 1) % cycleImages.length;
-      toothImage.style.backgroundImage = "url('" + cycleImages[cycleIndex] + "')";
-    }
+/* (NEW) Stop Confirmation Popup Overlay */
+#stopPopup {
+  display: none;
+  position: fixed;
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center; 
+  align-items: center;
+}
+#stopPopupContent {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
 
-    // Reset brush history every 7 days
-    resetBrushHistory();
-  </script>
-</body>
-</html>
+/* Subtle float animation if needed */
+@keyframes floatTooth {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+.bounceTooth {
+  animation: floatTooth 2s infinite ease-in-out;
+}
+
+/* ===== MEDIA QUERIES ===== */
+@media (max-width: 768px) {
+  .landing-header {
+    font-size: 1.8em;
+    padding: 0 10px;
+  }
+
+  #landingToothImage {
+    width: 200px;
+    height: 200px;
+  }
+
+  #landingStartButton {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+
+  #timerHeading {
+    font-size: 1.2em;
+  }
+
+  #toothImage {
+    width: 200px;
+    height: 200px;
+  }
+
+  #timer {
+    font-size: 3em;
+  }
+
+  button {
+    padding: 10px 20px;
+    font-size: 0.9em;
+    margin: 5px;
+  }
+
+  #returnHomeButton {
+    top: 10px;
+    right: 10px;
+    font-size: 1.2em;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .landing-header {
+    font-size: 1.5em;
+  }
+
+  #landingToothImage {
+    width: 150px;
+    height: 150px;
+  }
+
+  #timerHeading {
+    font-size: 1em;
+  }
+
+  #toothImage {
+    width: 150px;
+    height: 150px;
+  }
+
+  #timer {
+    font-size: 2.5em;
+  }
+
+  button {
+    padding: 8px 16px;
+    font-size: 0.8em;
+  }
+
+  #returnHomeButton {
+    font-size: 1em;
+    padding: 6px;
+  }
+}
