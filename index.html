@@ -77,7 +77,7 @@
     <div id="calendarPopupContent">
       <h2>Brushing History</h2>
       <button id="closeCalendarPopup" onclick="closeCalendarPopup()" aria-label="Close calendar">Close</button>
-      <!-- Added container for scroll -->
+      <!-- Calendar log container with scroll -->
       <div id="calendarLogContainer">
         <table>
           <thead>
@@ -268,7 +268,7 @@
       logAction("Resumed", getElapsedTime());
     }
 
-    // 5) Reset Timer - now only resets and does not auto start
+    // 5) Reset Timer - only resets, does not auto-start
     function resetTimer() {
       clearInterval(countdown);
       timerDisplay.textContent = "2:00";
