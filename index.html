@@ -44,10 +44,13 @@
     <div id="timerButtons">
       <button id="startButton" onclick="startTimer()" aria-label="Start timer">Start</button>
       <button id="pauseButton" onclick="pauseTimer()" aria-label="Pause timer" disabled>Pause</button>
-      <!-- Stop button always enabled -> triggers the confirmation popup -->
-      <button id="stopButton" onclick="stopConfirmation()" aria-label="Stop timer">Stop</button>
+      <!-- Stop button now disabled until timer starts -->
+      <button id="stopButton" onclick="stopConfirmation()" aria-label="Stop timer" disabled>Stop</button>
       <button id="resetButton" onclick="resetTimer()" aria-label="Reset timer">Reset</button>
     </div>
+
+    <!-- Resume After End Button (hidden initially) -->
+    <button id="resumeAfterEndButton" onclick="resumeAfterEnd()" style="display: none;">Resume Brushing</button>
 
     <!-- Brush Log Table -->
     <div id="brushLog">
@@ -89,7 +92,7 @@
     </div>
   </div>
 
-  <!-- (NEW) Stop Confirmation Popup -->
+  <!-- Stop Confirmation Popup -->
   <div id="stopPopup" style="display: none;" class="popup-overlay">
     <div id="stopPopupContent" class="popup-content">
       <h2>are you sure? reminder: brushing for 2 minutes prevents cavities</h2>
@@ -148,23 +151,14 @@
       cycleIndex = 0;
     }
 
-    // 2) Start Timer
-    function startTimer() {
-      startBtnTimerPage.style.display = "none";
-      pauseButton.disabled = false;
-      isPaused = false;
-      isStopped = false;
+    // Function to start the countdown interval
+    function startCountdown() {
       startTime = Date.now();
-
-      if (countdown) {
-        clearInterval(countdown);
-      }
-
       countdown = setInterval(() => {
         if (!isPaused && !isStopped) {
           let minutes = Math.floor(timeLeft / 60);
           let seconds = timeLeft % 60;
-          if (seconds < 10) seconds = "0" + seconds;
+          seconds = seconds < 10 ? "0" + seconds : seconds;
           timerDisplay.textContent = minutes + ":" + seconds;
 
           // Magnify + rotate clean images for last 5s
@@ -178,13 +172,27 @@
             clearInterval(countdown);
             timerDisplay.textContent = "0:00";
             pauseButton.disabled = true;
+            stopButton.disabled = true;
             toothImage.style.backgroundImage = `url('clean5.png')`;
             logAction("Completed", 120);
           }
           timeLeft--;
         }
       }, 1000);
+    }
 
+    // 2) Start Timer
+    function startTimer() {
+      startBtnTimerPage.style.display = "none";
+      pauseButton.disabled = false;
+      stopButton.disabled = false; // Enable stop button now that timer starts
+      isPaused = false;
+      isStopped = false;
+      startTime = Date.now();
+      if (countdown) {
+        clearInterval(countdown);
+      }
+      startCountdown();
       logAction("Started", 0);
     }
 
@@ -205,30 +213,53 @@
 
     // ===== Stop Confirmation Popup =====
     function stopConfirmation() {
+      if (!isPaused && !isStopped) {
+        clearInterval(countdown);
+        isPaused = true;
+      }
       stopPopup.style.display = "flex";
     }
 
+    // Called when the Resume button in the popup is clicked
     function resumeBrushing() {
-      // close popup, continue timer
       stopPopup.style.display = "none";
+      isPaused = false;
+      // Resume the countdown from where it left off
+      startCountdown();
+      stopButton.disabled = false;
+      pauseButton.disabled = false;
+      pauseButton.textContent = "Pause";
+      pauseButton.style.backgroundColor = "#FFB347";
+      logAction("Resumed", getElapsedTime());
     }
 
+    // Called when the End button in the popup is clicked
     function confirmStop() {
-      // Hide popup
       stopPopup.style.display = "none";
-
-      // Stop logic
       clearInterval(countdown);
       isStopped = true;
-      pauseButton.disabled = false; // keep pause/resume
+      pauseButton.disabled = true;
+      stopButton.disabled = true;
       timerDisplay.classList.remove("magnify");
 
-      // Evaluate how much was brushed + how much is left
       const brushedTime = getElapsedTime();
-      const timeRemaining = timeLeft; // what remains
-      timerDisplay.textContent = `you only brushed for ${brushedTime} seconds. brush for ${timeRemaining} more seconds to ensure cavity prevention`;
-
+      const timeRemaining = timeLeft;
+      timerDisplay.textContent = `You only brushed for ${brushedTime} seconds. Brush for ${timeRemaining} more seconds to ensure cavity prevention.`;
       logAction("Stopped early", brushedTime);
+
+      // Show resume button after ending
+      document.getElementById("resumeAfterEndButton").style.display = "inline-block";
+    }
+
+    // Function to resume timer after ending
+    function resumeAfterEnd() {
+      document.getElementById("resumeAfterEndButton").style.display = "none";
+      isStopped = false;
+      pauseButton.disabled = false;
+      stopButton.disabled = false;
+      // Resume countdown from current timeLeft
+      startCountdown();
+      logAction("Resumed", getElapsedTime());
     }
 
     // 5) Reset Timer
@@ -251,6 +282,10 @@
 
       startBtnTimerPage.style.display = "inline-block";
       logBody.innerHTML = "";
+      // Also hide resumeAfterEndButton if visible
+      document.getElementById("resumeAfterEndButton").style.display = "none";
+      // Disable stop button again
+      stopButton.disabled = true;
     }
 
     // 6) Return to Home
