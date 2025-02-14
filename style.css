@@ -6,7 +6,7 @@ body {
   color: black;
   margin: 0;
   padding: 10px;
-  overflow: hidden;
+  /* overflow: hidden; */ /* Removed to enable scrolling */
 }
 
 /* Custom cursor for landing page */
@@ -201,6 +201,12 @@ button:hover {
   background-color: rgba(242, 242, 242, 0.5); /* Semi-transparent background */
 }
 
+/* Ensure the table scrolls */
+#brushLog div {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
 /* Calendar Popup */
 #calendarPopup {
   display: none;
@@ -257,12 +263,12 @@ button:hover {
   transition: 0.3s;
   font-family: 'Silkscreen', cursive;
   color: white;
-  background-color: #FF6F61;
+  background-color: black; /* Changed to black */
   margin-top: 10px;
 }
 
 #closeCalendarPopup:hover {
-  background-color: #FF867C;
+  background-color: #333; /* Darker black on hover */
 }
 
 /* Animation */
