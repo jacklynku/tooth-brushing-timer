@@ -180,6 +180,22 @@ button:hover {
   background-color: #333;
 }
 
+/* Resume After End Button */
+#resumeAfterEndButton {
+  background-color: #77DD77 !important;
+  border: none;
+  border-radius: 5px;
+  padding: 12px 24px;
+  font-size: 1em;
+  font-family: 'Silkscreen', cursive;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+#resumeAfterEndButton:hover {
+  background-color: #99E699;
+}
+
 /* Return to Home Button */
 #returnHomeButton {
   background-color: transparent;
