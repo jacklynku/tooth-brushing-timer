@@ -92,7 +92,20 @@ body {
 }
 
 #toothImage:hover {
-  transform: scale(1.1); /* Reduced from 1.2 */
+  /* No scale */
+}
+
+/* Tiny 'twitch' on click */
+#toothImage:active {
+  animation: toothTwitch 0.2s;
+}
+
+/* Keyframes for a small rotate twitch */
+@keyframes toothTwitch {
+  0% { transform: rotate(0deg); }
+  30% { transform: rotate(5deg); }
+  60% { transform: rotate(-5deg); }
+  100% { transform: rotate(0deg); }
 }
 
 #toothImage:active {
