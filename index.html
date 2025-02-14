@@ -17,7 +17,9 @@
   <div id="landingPage">
     <h1 class="landing-header">Let's Brush Our Teeth</h1>
     <div id="landingToothImage" onclick="enterTimer()"></div>
-    <button id="landingStartButton" onclick="enterTimer()" aria-label="Start brushing timer">Start</button>
+    <!-- CHANGED TEXT HERE from "Start" to "Enter Timer" -->
+    <button id="landingStartButton" onclick="enterTimer()" aria-label="Start brushing timer">Enter Timer</button>
+    
     <!-- Calendar Icon on Landing Page -->
     <button id="landingCalendarButton" onclick="openCalendarPopup()" aria-label="Open calendar" style="position: absolute; top: 20px; right: 20px; font-size: 1.5em; border: none; background: none; cursor: pointer;">
       <img src="calendar.png" alt="Calendar" style="width: 24px; height: 24px;">
@@ -36,8 +38,8 @@
 
     <h1 id="timerHeading">TOOTH BRUSHING TIMER</h1>
 
-    <!-- Tooth image above the timer (hidden until timer starts) -->
-    <div id="toothImage" style="display: none;"></div>
+    <!-- Tooth image above the timer (was hidden initially, now displayed upon enterTimer) -->
+    <div id="toothImage" style="display: none;" onclick="cycleToothImage()"></div>
 
     <div id="timer">2:00</div>
 
@@ -98,6 +100,10 @@
     let cleanImages = ["clean1.png", "clean2.png", "clean3.png", "clean4.png", "clean5.png"];
     let cleanImageIndex = 0;
 
+    // Additional array to cycle tooth on clicks
+    let cycleIndex = 0;
+    let cycleImages = ["tooth.png", "clean1.png", "clean2.png", "clean3.png", "clean4.png", "clean5.png"];
+
     // Reset brush history every 7 days
     function resetBrushHistory() {
       const now = new Date();
@@ -126,6 +132,10 @@
       timerPage.style.display = "flex";
       timerPage.style.flexDirection = "column";
       timerPage.style.alignItems = "center";
+
+      // Show tooth immediately upon entering
+      toothImage.style.display = "block";
+      toothImage.style.backgroundImage = "url('tooth.png')";
     }
 
     // 2) Start Timer
@@ -136,9 +146,6 @@
       isPaused = false;
       isStopped = false;
       startTime = Date.now();
-
-      toothImage.style.display = "block";
-      toothImage.style.backgroundImage = `url('tooth.png')`;
 
       if (countdown) {
         clearInterval(countdown);
@@ -211,8 +218,10 @@
       pauseButton.style.backgroundColor = "#FFB347";
       isPaused = false;
       isStopped = false;
+
       toothImage.style.display = "none";
-      toothImage.style.backgroundImage = `url('tooth.png')`;
+      toothImage.style.backgroundImage = "url('tooth.png')";
+      cleanImageIndex = 0;  // reset image index
       startBtnTimerPage.style.display = "inline-block";
       logBody.innerHTML = ""; // Clear Brush Log
     }
@@ -263,6 +272,12 @@
         const row = `<tr><td>${entry.date}</td><td>${entry.time}</td><td>${entry.elapsed}</td></tr>`;
         calendarLogBody.insertAdjacentHTML("beforeend", row);
       });
+    }
+
+    // EXTRA: Cycle through tooth images on click
+    function cycleToothImage() {
+      cycleIndex = (cycleIndex + 1) % cycleImages.length;
+      toothImage.style.backgroundImage = `url('${cycleImages[cycleIndex]}')`;
     }
 
     // Reset brush history every 7 days
