@@ -92,7 +92,7 @@
   <!-- (NEW) Stop Confirmation Popup -->
   <div id="stopPopup" style="display: none;" class="popup-overlay">
     <div id="stopPopupContent" class="popup-content">
-      <h2>Are you sure? Brushing for 2 minutes prevents cavities!</h2>
+      <h2>are you sure? reminder: brushing for 2 minutes prevents cavities</h2>
       <button id="resumeButton" style="background-color: green; color: white; padding: 10px; margin: 5px;" onclick="resumeBrushing()">Resume</button>
       <button id="endButton" style="background-color: red; color: white; padding: 10px; margin: 5px;" onclick="confirmStop()">End</button>
     </div>
@@ -230,7 +230,7 @@
 
       // Show the amount of time they brushed
       const brushedTime = getElapsedTime();
-      timerDisplay.textContent = `Brushed for ${brushedTime} seconds.\\nPlease brush for 2 minutes to ensure cavity prevention`;
+      timerDisplay.textContent = `Brushed for ${brushedTime} seconds.\\please brush for 2 minutes to ensure cavity prevention`;
       logAction("Stopped early", brushedTime);
     }
 
