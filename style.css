@@ -6,7 +6,7 @@ body {
   color: black;
   margin: 0;
   padding: 10px;
-  /* overflow: hidden; */ /* Removed to enable scrolling */
+  overflow: hidden;
 }
 
 /* Custom cursor for landing page */
@@ -102,16 +102,6 @@ body {
   margin: 5px 0; /* Reduced spacing */
 }
 
-/* Magnify animation for last 5 seconds */
-@keyframes magnify {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-}
-
-.magnify {
-  animation: magnify 1s infinite;
-}
-
 #timerButtons {
   display: flex;
   flex-wrap: wrap;
@@ -153,8 +143,8 @@ button:hover {
   right: 20px;
   padding: 0;
   border: none;
-  width: 32px;
-  height: 32px;
+  width: 36px; /* Increased size */
+  height: 36px; /* Increased size */
 }
 
 #calendarButton, #landingCalendarButton {
@@ -199,12 +189,6 @@ button:hover {
 
 #brushLog th {
   background-color: rgba(242, 242, 242, 0.5); /* Semi-transparent background */
-}
-
-/* Ensure the table scrolls */
-#brushLog div {
-  max-height: 200px;
-  overflow-y: auto;
 }
 
 /* Calendar Popup */
@@ -261,100 +245,4 @@ button:hover {
   border-radius: 5px;
   cursor: pointer;
   transition: 0.3s;
-  font-family: 'Silkscreen', cursive;
-  color: white;
-  background-color: #FF6F61;
-  margin-top: 10px;
-}
-
-#closeCalendarPopup:hover {
-  background-color: #FF867C;
-}
-
-/* Animation */
-@keyframes floatTooth {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-
-.bounceTooth {
-  animation: floatTooth 2s infinite ease-in-out;
-}
-
-/* ===== MOBILE STYLES ===== */
-@media (max-width: 768px) {
-  .landing-header {
-    font-size: 1.8em;
-    padding: 0 10px;
-  }
-
-  #landingToothImage {
-    width: 200px;
-    height: 200px;
-  }
-
-  #landingStartButton {
-    padding: 10px 20px;
-    font-size: 1em;
-  }
-
-  #timerHeading {
-    font-size: 1.2em;
-  }
-
-  #toothImage {
-    width: 200px;
-    height: 200px;
-  }
-
-  #timer {
-    font-size: 3em;
-  }
-
-  button {
-    padding: 10px 20px;
-    font-size: 0.9em;
-    margin: 5px;
-  }
-
-  #returnHomeButton {
-    top: 10px;
-    right: 10px;
-    font-size: 1.2em;
-    padding: 8px;
-  }
-}
-
-@media (max-width: 480px) {
-  .landing-header {
-    font-size: 1.5em;
-  }
-
-  #landingToothImage {
-    width: 150px;
-    height: 150px;
-  }
-
-  #timerHeading {
-    font-size: 1em;
-  }
-
-  #toothImage {
-    width: 150px;
-    height: 150px;
-  }
-
-  #timer {
-    font-size: 2.5em;
-  }
-
-  button {
-    padding: 8px 16px;
-    font-size: 0.8em;
-  }
-
-  #returnHomeButton {
-    font-size: 1em;
-    padding: 6px;
-  }
-}
+  font-family: 'Silkscreen',
