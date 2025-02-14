@@ -42,7 +42,7 @@ body {
 }
 
 #landingToothImage:hover {
-  transform: scale(1.2);
+  transform: scale(1.1); /* Reduced from 1.2 */
 }
 
 #landingStartButton {
@@ -70,7 +70,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 5px; /* Reduced spacing */
+  gap: 5px;
 }
 
 #timerHeading {
@@ -86,20 +86,20 @@ body {
   height: 400px;
   background: url('tooth.png') no-repeat center;
   background-size: contain;
-  margin-bottom: 5px; /* Reduced spacing */
+  margin-bottom: 5px;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
 
 #toothImage:hover {
-  transform: scale(1.2);
+  transform: scale(1.1); /* Reduced from 1.2 */
 }
 
 #toothImage:active {
   animation: cleanCycle 2s steps(6) infinite;
 }
 
-/* Keyframes for optional step animation if user clicks tooth */
+/* Clean cycle animation (optional) */
 @keyframes cleanCycle {
   0%   { background: url('clean1.png') no-repeat center; }
   20%  { background: url('clean2.png') no-repeat center; }
@@ -112,9 +112,9 @@ body {
 /* Countdown Timer */
 #timer {
   font-size: 4em;
-  font-family: 'Digital-7 Mono', monospace; /* Digital font */
-  color: #B39EB5; /* Pastel purple */
-  margin: 5px 0; /* Reduced spacing */
+  font-family: 'Digital-7 Mono', monospace;
+  color: #B39EB5;
+  margin: 5px 0;
 }
 
 /* Magnify animation for last 5 seconds */
@@ -149,20 +149,19 @@ button:hover {
 }
 
 #startButton {
-  background-color: #77DD77; /* Pastel green */
+  background-color: #77DD77;
 }
 #startButton:hover {
   background-color: #99E699;
 }
 
 #pauseButton {
-  background-color: #FFB347; /* Pastel orange */
+  background-color: #FFB347;
 }
 #pauseButton:hover {
   background-color: #FFC987;
 }
 
-/* Stop button stays disabled until time is up */
 #stopButton {
   background-color: #FF6F61;
   pointer-events: none;
@@ -174,7 +173,7 @@ button:hover {
 
 /* Reset Button */
 #resetButton {
-  background-color: #000000; /* Black */
+  background-color: #000000;
 }
 #resetButton:hover {
   background-color: #333;
@@ -215,14 +214,14 @@ button:hover {
 #brushLog h2 {
   font-family: 'Press Start 2P', cursive;
   font-size: 1.2em;
-  color: black; /* Brush Log heading color is black */
+  color: black;
   margin-bottom: 10px;
 }
 
 #brushLog table {
   width: 100%;
   border-collapse: collapse;
-  background-color: transparent; /* Remove white background */
+  background-color: transparent;
 }
 
 #brushLog th,
@@ -230,7 +229,7 @@ button:hover {
   padding: 8px;
   border: 1px solid #ddd;
   font-family: 'Silkscreen', cursive;
-  background-color: transparent; /* Remove white background */
+  background-color: transparent;
   text-align: left;
 }
 
@@ -238,7 +237,6 @@ button:hover {
   background-color: rgba(242, 242, 242, 0.5);
 }
 
-/* Scroll inside table */
 #brushLog div {
   max-height: 200px;
   overflow-y: auto;
@@ -308,7 +306,7 @@ button:hover {
   background-color: #333;
 }
 
-/* Hover-floating tooth (optional) */
+/* Subtle float animation if needed */
 @keyframes floatTooth {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-5px); }
