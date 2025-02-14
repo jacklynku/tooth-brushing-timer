@@ -36,15 +36,14 @@
 
     <h1 id="timerHeading">TOOTH BRUSHING TIMER</h1>
 
-    <!-- Tooth image above the timer (hidden until user enters Timer) -->
-    <div id="toothImage" style="display: none;"></div>
+    <!-- Tooth image above the timer (click to cycle images) -->
+    <div id="toothImage" style="display: none;" onclick="cycleToothImage()"></div>
 
     <div id="timer">2:00</div>
 
     <div id="timerButtons">
       <button id="startButton" onclick="startTimer()" aria-label="Start timer">Start</button>
       <button id="pauseButton" onclick="pauseTimer()" aria-label="Pause timer" disabled>Pause</button>
-      <!-- Stop is disabled until the timer completes -->
       <button id="stopButton" onclick="stopTimer()" aria-label="Stop timer" disabled>Stop</button>
       <button id="resetButton" onclick="resetTimer()" aria-label="Reset timer">Reset</button>
     </div>
@@ -99,6 +98,10 @@
     let cleanImages = ["clean1.png", "clean2.png", "clean3.png", "clean4.png", "clean5.png"];
     let cleanImageIndex = 0;
 
+    // Additional array & index for manual click cycling
+    let cycleImages = ["tooth.png", ...cleanImages]; // tooth.png, then all clean images
+    let cycleIndex = 0;
+
     // Reset brush history every 7 days
     function resetBrushHistory() {
       const now = new Date();
@@ -120,7 +123,6 @@
     const logBody = document.getElementById("logBody");
     const calendarPopup = document.getElementById("calendarPopup");
     const calendarLogBody = document.getElementById("calendarLogBody");
-    const calendarPopupContent = document.getElementById("calendarPopupContent");
 
     // 1) Go from Landing Page to Timer Page
     function enterTimer() {
@@ -132,14 +134,14 @@
       // Show tooth immediately
       toothImage.style.display = "block";
       toothImage.style.backgroundImage = "url('tooth.png')";
+      cycleIndex = 0; // Reset manual cycle to 0
     }
 
     // 2) Start Timer
     function startTimer() {
       startBtnTimerPage.style.display = "none";
       pauseButton.disabled = false;
-      // Timer not elapsed => keep stop disabled
-      stopButton.disabled = true;
+      stopButton.disabled = false; // Enable stop at any time
       isPaused = false;
       isStopped = false;
       startTime = Date.now();
@@ -155,21 +157,21 @@
           if (seconds < 10) seconds = "0" + seconds;
           timerDisplay.textContent = minutes + ":" + seconds;
 
-          // If we have <= 5s left, start magnify + clean images
+          // If we have <= 5s left, do magnify + rotate clean images
           if (timeLeft <= 5) {
             timerDisplay.classList.add("magnify");
             toothImage.style.backgroundImage = `url('${cleanImages[cleanImageIndex]}')`;
             cleanImageIndex = (cleanImageIndex + 1) % cleanImages.length;
           }
 
-          // Once timer hits 0, allow stopping
+          // If time hits 0, that means we're done brushing
           if (timeLeft <= 0) {
             clearInterval(countdown);
             timerDisplay.textContent = "0:00";
-            pauseButton.disabled = true; // can't pause after done
-            stopButton.disabled = false; // now you can press stop
-            toothImage.style.backgroundImage = "url('clean5.png')";
-            logAction("Completed", 120); // Log completion
+            pauseButton.disabled = true;
+            stopButton.disabled = false; 
+            toothImage.style.backgroundImage = `url('clean5.png')`;
+            logAction("Completed", 120);
           }
           timeLeft--;
         }
@@ -196,11 +198,11 @@
 
     // 4) Stop Timer
     function stopTimer() {
-      // This is only enabled AFTER time is up
       clearInterval(countdown);
       isStopped = true;
       stopButton.disabled = true;
       pauseButton.disabled = true;
+      timerDisplay.classList.remove("magnify");
       logAction("Stopped", getElapsedTime());
     }
 
@@ -208,7 +210,7 @@
     function resetTimer() {
       clearInterval(countdown);
       timerDisplay.textContent = "2:00";
-      timerDisplay.style.color = "#B39EB5"; // Reset to pastel purple
+      timerDisplay.style.color = "#B39EB5"; // Pastel purple
       timerDisplay.classList.remove("magnify");
       timeLeft = 120;
       pauseButton.disabled = true;
@@ -217,12 +219,13 @@
       isPaused = false;
       isStopped = false;
 
-      // Keep the tooth image visible & functional
       toothImage.style.display = "block";
       toothImage.style.backgroundImage = "url('tooth.png')";
-      cleanImageIndex = 0; // reset to start tooth
+      cleanImageIndex = 0;
+      cycleIndex = 0; // Reset manual cycle to 0
 
       startBtnTimerPage.style.display = "inline-block";
+      stopButton.disabled = true;
       logBody.innerHTML = ""; // Clear Brush Log
     }
 
@@ -265,7 +268,7 @@
       calendarPopup.style.display = "none";
     }
 
-    // (NEW) Close popup by clicking anywhere outside calendar content
+    // Close popup by clicking outside the calendar content
     calendarPopup.addEventListener('click', function(e) {
       if (e.target.id === 'calendarPopup') {
         closeCalendarPopup();
@@ -279,6 +282,12 @@
         const row = `<tr><td>${entry.date}</td><td>${entry.time}</td><td>${entry.elapsed}</td></tr>`;
         calendarLogBody.insertAdjacentHTML("beforeend", row);
       });
+    }
+
+    // MANUAL function: cycle tooth images on click
+    function cycleToothImage() {
+      cycleIndex = (cycleIndex + 1) % cycleImages.length;
+      toothImage.style.backgroundImage = `url('${cycleImages[cycleIndex]}')`;
     }
 
     // Reset brush history every 7 days
