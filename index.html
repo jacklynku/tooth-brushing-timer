@@ -44,6 +44,7 @@
     <div id="timerButtons">
       <button id="startButton" onclick="startTimer()" aria-label="Start timer">Start</button>
       <button id="pauseButton" onclick="pauseTimer()" aria-label="Pause timer" disabled>Pause</button>
+      <!-- Stop is enabled once timer starts. Pressing stop just freezes the timer. -->
       <button id="stopButton" onclick="stopTimer()" aria-label="Stop timer" disabled>Stop</button>
       <button id="resetButton" onclick="resetTimer()" aria-label="Reset timer">Reset</button>
     </div>
@@ -99,7 +100,7 @@
     let cleanImageIndex = 0;
 
     // Additional array & index for manual click cycling
-    let cycleImages = ["tooth.png", ...cleanImages]; // tooth.png, then all clean images
+    let cycleImages = ["tooth.png", ...cleanImages];
     let cycleIndex = 0;
 
     // Reset brush history every 7 days
@@ -131,17 +132,16 @@
       timerPage.style.flexDirection = "column";
       timerPage.style.alignItems = "center";
 
-      // Show tooth immediately
       toothImage.style.display = "block";
       toothImage.style.backgroundImage = "url('tooth.png')";
-      cycleIndex = 0; // Reset manual cycle
+      cycleIndex = 0;
     }
 
     // 2) Start Timer
     function startTimer() {
       startBtnTimerPage.style.display = "none";
       pauseButton.disabled = false;
-      stopButton.disabled = false; // Now user can stop any time
+      stopButton.disabled = false; /* <--- STOP is enabled immediately */
       isPaused = false;
       isStopped = false;
       startTime = Date.now();
@@ -164,10 +164,12 @@
             cleanImageIndex = (cleanImageIndex + 1) % cleanImages.length;
           }
 
+          // If time hits 0, timer is done
           if (timeLeft <= 0) {
             clearInterval(countdown);
             timerDisplay.textContent = "0:00";
             pauseButton.disabled = true;
+            // Keep STOP active if they'd like to forcibly stop
             stopButton.disabled = false;
             toothImage.style.backgroundImage = `url('clean5.png')`;
             logAction("Completed", 120);
@@ -176,7 +178,6 @@
         }
       }, 1000);
 
-      // Log the start time
       logAction("Started", 0);
     }
 
@@ -197,20 +198,23 @@
 
     // 4) Stop Timer
     function stopTimer() {
-      clearInterval(countdown);
-      isStopped = true;
-      stopButton.disabled = true;
-      pauseButton.disabled = true;
-      timerDisplay.classList.remove("magnify");
-      timerDisplay.textContent = "Stopped"; /* <--- Show 'Stopped' immediately */
-      logAction("Stopped", getElapsedTime());
+      // End the countdown but DO NOT display "Stopped"
+      if (!isStopped) {
+        clearInterval(countdown);
+        isStopped = true;
+        stopButton.disabled = true;
+        pauseButton.disabled = true;
+        timerDisplay.classList.remove("magnify");
+        // Timer simply stays at leftover time
+        logAction("Stopped", getElapsedTime());
+      }
     }
 
     // 5) Reset Timer
     function resetTimer() {
       clearInterval(countdown);
       timerDisplay.textContent = "2:00";
-      timerDisplay.style.color = "#B39EB5"; // Pastel purple
+      timerDisplay.style.color = "#B39EB5";
       timerDisplay.classList.remove("magnify");
       timeLeft = 120;
       pauseButton.disabled = true;
@@ -219,6 +223,7 @@
       isPaused = false;
       isStopped = false;
 
+      // Keep tooth visible
       toothImage.style.display = "block";
       toothImage.style.backgroundImage = "url('tooth.png')";
       cleanImageIndex = 0;
@@ -226,7 +231,7 @@
 
       startBtnTimerPage.style.display = "inline-block";
       stopButton.disabled = true;
-      logBody.innerHTML = ""; // Clear Brush Log
+      logBody.innerHTML = "";
     }
 
     // 6) Return to Home
@@ -234,10 +239,10 @@
       timerPage.style.display = "none";
       landingPage.style.display = "flex";
       resetTimer();
-      logBody.innerHTML = ""; // Clear Brush Log
+      logBody.innerHTML = "";
     }
 
-    // 7) Log actions to the table
+    // 7) Log actions
     function logAction(action, elapsedSeconds) {
       const now = new Date();
       const timeString = now.toLocaleTimeString();
@@ -267,7 +272,7 @@
       calendarPopup.style.display = "none";
     }
 
-    // Close popup by clicking outside the calendar content
+    // Close popup by clicking outside
     calendarPopup.addEventListener('click', function(e) {
       if (e.target.id === 'calendarPopup') {
         closeCalendarPopup();
@@ -283,7 +288,7 @@
       });
     }
 
-    // MANUAL function: cycle tooth images on click
+    // Manually cycle tooth images
     function cycleToothImage() {
       cycleIndex = (cycleIndex + 1) % cycleImages.length;
       toothImage.style.backgroundImage = `url('${cycleImages[cycleIndex]}')`;
