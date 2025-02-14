@@ -257,12 +257,6 @@
       isStopped = false;
       pauseButton.disabled = false;
       stopButton.disabled = false;
-      // Update timer display immediately using current timeLeft
-      let minutes = Math.floor(timeLeft / 60);
-      let seconds = timeLeft % 60;
-      seconds = seconds < 10 ? "0" + seconds : seconds;
-      timerDisplay.textContent = minutes + ":" + seconds;
-      timerDisplay.style.color = "#B39EB5"; // Reset to default colour if changed
       // Resume countdown from current timeLeft
       startCountdown();
       logAction("Resumed", getElapsedTime());
