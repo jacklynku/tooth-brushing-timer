@@ -44,7 +44,7 @@
     <div id="timerButtons">
       <button id="startButton" onclick="startTimer()" aria-label="Start timer">Start</button>
       <button id="pauseButton" onclick="pauseTimer()" aria-label="Pause timer" disabled>Pause</button>
-      <!-- Stop button always enabled now, triggers the confirmation popup -->
+      <!-- Stop button always enabled -> triggers the confirmation popup -->
       <button id="stopButton" onclick="stopConfirmation()" aria-label="Stop timer">Stop</button>
       <button id="resetButton" onclick="resetTimer()" aria-label="Reset timer">Reset</button>
     </div>
@@ -152,7 +152,6 @@
     function startTimer() {
       startBtnTimerPage.style.display = "none";
       pauseButton.disabled = false;
-      // The user can stop any time
       isPaused = false;
       isStopped = false;
       startTime = Date.now();
@@ -168,7 +167,7 @@
           if (seconds < 10) seconds = "0" + seconds;
           timerDisplay.textContent = minutes + ":" + seconds;
 
-          // If we have <= 5s left, do magnify + rotate clean images
+          // Magnify + rotate clean images for last 5s
           if (timeLeft <= 5) {
             timerDisplay.classList.add("magnify");
             toothImage.style.backgroundImage = `url('${cleanImages[cleanImageIndex]}')`;
@@ -204,33 +203,31 @@
       }
     }
 
-    // (NEW) Stop Confirmation Popup
+    // ===== Stop Confirmation Popup =====
     function stopConfirmation() {
-      // Show the Are You Sure? popup
       stopPopup.style.display = "flex";
     }
 
-    // If user resumes brushing
     function resumeBrushing() {
+      // close popup, continue timer
       stopPopup.style.display = "none";
-      // Timer continues from where it left off
-      // If they had paused, the user can unpause
     }
 
-    // If user actually stops
     function confirmStop() {
       // Hide popup
       stopPopup.style.display = "none";
 
-      // Do the actual stop logic
+      // Stop logic
       clearInterval(countdown);
       isStopped = true;
-      pauseButton.disabled = true;
+      pauseButton.disabled = false; // keep pause/resume
       timerDisplay.classList.remove("magnify");
 
-      // Show the amount of time they brushed
+      // Evaluate how much was brushed + how much is left
       const brushedTime = getElapsedTime();
-      timerDisplay.textContent = `you only brushed for ${brushedTime} seconds.\please brush for 2 minutes to ensure cavity prevention`;
+      const timeRemaining = timeLeft; // what remains
+      timerDisplay.textContent = `you only brushed for ${brushedTime} seconds.\nbrush for ${timeRemaining} more seconds to ensure cavity prevention`;
+
       logAction("Stopped early", brushedTime);
     }
 
@@ -238,7 +235,7 @@
     function resetTimer() {
       clearInterval(countdown);
       timerDisplay.textContent = "2:00";
-      timerDisplay.style.color = "#B39EB5"; // Pastel purple
+      timerDisplay.style.color = "#B39EB5";
       timerDisplay.classList.remove("magnify");
       timeLeft = 120;
       pauseButton.disabled = true;
