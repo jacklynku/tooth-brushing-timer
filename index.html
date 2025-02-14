@@ -19,19 +19,16 @@
     <div id="landingToothImage" onclick="enterTimer()"></div>
     <button id="landingStartButton" onclick="enterTimer()" aria-label="Start brushing timer">Start</button>
     <!-- Calendar Icon on Landing Page -->
-<button id="landingCalendarButton" onclick="openCalendarPopup()" aria-label="Open calendar" style="position: absolute; top: 20px; right: 20px; font-size: 1.5em; border: none; background: none; cursor: pointer;">
-  <img src="calendar.png" alt="Calendar" style="width: 24px; height: 24px;">
-</button>
+    <button id="landingCalendarButton" onclick="openCalendarPopup()" aria-label="Open calendar" style="position: absolute; top: 20px; right: 20px; font-size: 1.5em; border: none; background: none; cursor: pointer;">🗓️</button>
+  </div>
 
   <!-- Timer Page (hidden initially) -->
   <div id="timerPage" style="display: none;">
     <!-- Return to Home Button -->
-    <button id="returnHomeButton" onclick="returnHome()" aria-label="Return to home" style="background: url('home.png') no-repeat center; background-size: contain; width: 32px; height: 32px; border: none; padding: 0;"></button>
+    <button id="returnHomeButton" onclick="returnHome()" aria-label="Return to home" style="background: url('home.png') no-repeat center; background-size: contain; width: 36px; height: 36px; border: none; padding: 0;"></button>
 
     <!-- Calendar Icon on Timer Page -->
-<button id="calendarButton" onclick="openCalendarPopup()" aria-label="Open calendar" style="position: absolute; top: 60px; right: 20px; font-size: 1.5em; border: none; background: none; cursor: pointer;">
-  <img src="calendar.png" alt="Calendar" style="width: 24px; height: 24px;">
-</button>
+    <button id="calendarButton" onclick="openCalendarPopup()" aria-label="Open calendar" style="position: absolute; top: 60px; right: 20px; font-size: 1.5em; border: none; background: none; cursor: pointer;">🗓️</button>
 
     <h1 id="timerHeading">TOOTH BRUSHING TIMER</h1>
 
@@ -43,28 +40,27 @@
     <div id="timerButtons">
       <button id="startButton" onclick="startTimer()" aria-label="Start timer">Start</button>
       <button id="pauseButton" onclick="pauseTimer()" aria-label="Pause timer" disabled>Pause</button>
-      <button id="stopButton" onclick="stopTimer()" aria-label="Stop timer" disabled>Stop</button>
+      <button id="stopButton" onclick="stopTimer()" aria-label="Stop timer">Stop</button>
       <button id="resetButton" onclick="resetTimer()" aria-label="Reset timer">Reset</button>
     </div>
 
     <!-- Brush Log Table -->
-<div id="brushLog">
-  <h2>Brush Log</h2>
-  <div style="max-height: 200px; overflow-y: auto;">
-    <table>
-      <thead>
-        <tr>
-          <th>Action</th>
-          <th style="padding-right: 30px;">Time</th>
-          <th>Elapsed (s)</th>
-        </tr>
-      </thead>
-      <tbody id="logBody">
-        <!-- Log entries will be added here -->
-      </tbody>
-    </table>
+    <div id="brushLog">
+      <h2>Brush Log</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th style="padding-right: 30px;">Time</th>
+            <th>Elapsed (s)</th>
+          </tr>
+        </thead>
+        <tbody id="logBody">
+          <!-- Log entries will be added here -->
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
 
   <!-- Calendar Popup -->
   <div id="calendarPopup" style="display: none;">
@@ -130,7 +126,7 @@
     function startTimer() {
       startBtnTimerPage.style.display = "none";
       pauseButton.disabled = false;
-      stopButton.disabled = false; // Enable Stop button
+      stopButton.disabled = false;
       isPaused = false;
       isStopped = false;
       startTime = Date.now();
@@ -149,9 +145,8 @@
           if (seconds < 10) seconds = "0" + seconds;
           timerDisplay.textContent = minutes + ":" + seconds;
 
-          // Magnify animation from 5 seconds left
+          // Change tooth image during the last 5 seconds
           if (timeLeft <= 5) {
-            timerDisplay.classList.add("magnify");
             toothImage.style.backgroundImage = `url('${cleanImages[cleanImageIndex]}')`;
             cleanImageIndex = (cleanImageIndex + 1) % cleanImages.length;
           }
@@ -159,7 +154,7 @@
           if (timeLeft <= 0) {
             clearInterval(countdown);
             timerDisplay.textContent = "0:00";
-            stopButton.disabled = true; // Disable Stop button
+            stopButton.disabled = true;
             pauseButton.disabled = true;
             toothImage.style.backgroundImage = `url('clean5.png')`;
             logAction("Completed", 120); // Log completion
@@ -191,7 +186,7 @@
     function stopTimer() {
       clearInterval(countdown);
       isStopped = true;
-      stopButton.disabled = true; // Disable Stop button
+      stopButton.disabled = true;
       pauseButton.disabled = true; // Disable pause button after stopping
       logAction("Stopped", getElapsedTime());
     }
@@ -201,9 +196,8 @@
       clearInterval(countdown);
       timerDisplay.textContent = "2:00";
       timerDisplay.style.color = "#B39EB5"; // Reset to pastel purple
-      timerDisplay.classList.remove("magnify");
       timeLeft = 120;
-      stopButton.disabled = true; // Disable Stop button
+      stopButton.disabled = false;
       pauseButton.disabled = true;
       pauseButton.textContent = "Pause";
       pauseButton.style.backgroundColor = "#FFB347";
