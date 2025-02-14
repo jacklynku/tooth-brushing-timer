@@ -77,18 +77,21 @@
     <div id="calendarPopupContent">
       <h2>Brushing History</h2>
       <button id="closeCalendarPopup" onclick="closeCalendarPopup()" aria-label="Close calendar">Close</button>
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Time Started</th>
-            <th>Time Spent (s)</th>
-          </tr>
-        </thead>
-        <tbody id="calendarLogBody">
-          <!-- Calendar log entries will be added here -->
-        </tbody>
-      </table>
+      <!-- Added container for scroll -->
+      <div id="calendarLogContainer">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Time Started</th>
+              <th>Time Spent (s)</th>
+            </tr>
+          </thead>
+          <tbody id="calendarLogBody">
+            <!-- Calendar log entries will be added here -->
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -164,7 +167,7 @@
           // Magnify + rotate clean images for last 5s
           if (timeLeft <= 5) {
             timerDisplay.classList.add("magnify");
-            toothImage.style.backgroundImage = `url('${cleanImages[cleanImageIndex]}')`;
+            toothImage.style.backgroundImage = "url('" + cleanImages[cleanImageIndex] + "')";
             cleanImageIndex = (cleanImageIndex + 1) % cleanImages.length;
           }
 
@@ -173,8 +176,11 @@
             timerDisplay.textContent = "0:00";
             pauseButton.disabled = true;
             stopButton.disabled = true;
-            toothImage.style.backgroundImage = `url('clean5.png')`;
-            logAction("Completed", 120);
+            toothImage.style.backgroundImage = "url('clean5.png')";
+            // Log Completed only once
+            if(timeLeft === 0) {
+              logAction("Completed", 120);
+            }
           }
           timeLeft--;
         }
@@ -244,7 +250,7 @@
 
       const brushedTime = getElapsedTime();
       const timeRemaining = timeLeft;
-      timerDisplay.textContent = `You only brushed for ${brushedTime} seconds. Brush for ${timeRemaining} more seconds to ensure cavity prevention.`;
+      timerDisplay.textContent = "You only brushed for " + brushedTime + " seconds. Brush for " + timeRemaining + " more seconds to ensure cavity prevention.";
       logAction("Stopped early", brushedTime);
 
       // Show resume button after ending
@@ -262,7 +268,7 @@
       logAction("Resumed", getElapsedTime());
     }
 
-    // 5) Reset Timer
+    // 5) Reset Timer - now only resets and does not auto start
     function resetTimer() {
       clearInterval(countdown);
       timerDisplay.textContent = "2:00";
@@ -300,7 +306,7 @@
     function logAction(action, elapsedSeconds) {
       const now = new Date();
       const timeString = now.toLocaleTimeString();
-      const row = `<tr><td>${action}</td><td>${timeString}</td><td>${elapsedSeconds}</td></tr>`;
+      const row = "<tr><td>" + action + "</td><td>" + timeString + "</td><td>" + elapsedSeconds + "</td></tr>";
       logBody.insertAdjacentHTML("afterbegin", row);
 
       if (action === "Completed" || action === "Stopped early") {
@@ -337,7 +343,7 @@
     function updateCalendarLog() {
       calendarLogBody.innerHTML = "";
       brushHistory.forEach(entry => {
-        const row = `<tr><td>${entry.date}</td><td>${entry.time}</td><td>${entry.elapsed}</td></tr>`;
+        const row = "<tr><td>" + entry.date + "</td><td>" + entry.time + "</td><td>" + entry.elapsed + "</td></tr>";
         calendarLogBody.insertAdjacentHTML("beforeend", row);
       });
     }
@@ -345,7 +351,7 @@
     // MANUAL function: cycle tooth images on click
     function cycleToothImage() {
       cycleIndex = (cycleIndex + 1) % cycleImages.length;
-      toothImage.style.backgroundImage = `url('${cycleImages[cycleIndex]}')`;
+      toothImage.style.backgroundImage = "url('" + cycleImages[cycleIndex] + "')";
     }
 
     // Reset brush history every 7 days
