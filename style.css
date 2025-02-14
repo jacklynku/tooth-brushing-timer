@@ -2,11 +2,11 @@
 body {
   font-family: 'Silkscreen', cursive;
   text-align: center;
-  background: #B3E5FC;
+  background: #B3E5FC; /* Bright pastel blue background */
   color: black;
   margin: 0;
   padding: 10px;
-  /* overflow: hidden; */ /* Removed to enable scrolling */
+  /* overflow: hidden; */ /* Removed to enable scrolling if needed */
 }
 
 /* Custom cursor for landing page */
@@ -54,7 +54,7 @@ body {
   transition: 0.3s;
   font-family: 'Silkscreen', cursive;
   color: white;
-  background-color: #77DD77;
+  background-color: #77DD77; /* Pastel green for 'Enter Timer' button */
 }
 
 #landingStartButton:hover {
@@ -81,6 +81,8 @@ body {
   text-transform: uppercase;
 }
 
+/* Tooth image above the timer (default hidden by inline style in HTML).
+   We'll keep it visible when JS sets display = block. */
 #toothImage {
   width: 400px;
   height: 400px;
@@ -95,9 +97,26 @@ body {
   transform: scale(1.2);
 }
 
+/* Clean cycle animation on active click (only used if you want stepping frames).
+   In your final code, you have a function cycleToothImage() that changes
+   background images on click, so this keyframes can remain as is. */
+#toothImage:active {
+  animation: cleanCycle 2s steps(6) infinite;
+}
+
+@keyframes cleanCycle {
+  0%   { background: url('clean1.png') no-repeat center; }
+  20%  { background: url('clean2.png') no-repeat center; }
+  40%  { background: url('clean3.png') no-repeat center; }
+  60%  { background: url('clean4.png') no-repeat center; }
+  80%  { background: url('clean5.png') no-repeat center; }
+  100% { background: url('tooth.png') no-repeat center; }
+}
+
+/* Countdown Timer */
 #timer {
   font-size: 4em;
-  font-family: 'Digital-7 Mono', monospace;
+  font-family: 'Digital-7 Mono', monospace; /* Digital font */
   color: #B39EB5; /* Pastel purple */
   margin: 5px 0; /* Reduced spacing */
 }
@@ -105,13 +124,13 @@ body {
 /* Magnify animation for last 5 seconds */
 @keyframes magnify {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  50%      { transform: scale(1.1); }
 }
-
 .magnify {
   animation: magnify 1s infinite;
 }
 
+/* Timer Buttons Container */
 #timerButtons {
   display: flex;
   flex-wrap: wrap;
@@ -134,18 +153,45 @@ button:hover {
   transform: scale(1.05);
 }
 
-#startButton { background-color: #77DD77; }
-#startButton:hover { background-color: #99E699; }
+/* Start Timer Button */
+#startButton {
+  background-color: #77DD77; /* Pastel green */
+}
+#startButton:hover {
+  background-color: #99E699;
+}
 
-#pauseButton { background-color: #FFB347; }
-#pauseButton:hover { background-color: #FFC987; }
+/* Pause Button */
+#pauseButton {
+  background-color: #FFB347; /* Pastel orange */
+}
+#pauseButton:hover {
+  background-color: #FFC987;
+}
 
-#stopButton { background-color: #FF6F61; }
-#stopButton:hover { background-color: #FF867C; }
+/* Stop Button */
+#stopButton {
+  background-color: #FF6F61;
+  pointer-events: none; /* Disabled by default */
+  opacity: 0.5;
+}
+#stopButton:hover {
+  background-color: #FF867C;
+}
+#startButton:active ~ #stopButton {
+  pointer-events: auto;
+  opacity: 1;
+}
 
-#resetButton { background-color: #000000; }
-#resetButton:hover { background-color: #333; }
+/* Reset Button */
+#resetButton {
+  background-color: #000000; /* Black */
+}
+#resetButton:hover {
+  background-color: #333;
+}
 
+/* Return to Home Button (top right on Timer Page) */
 #returnHomeButton {
   background-color: transparent;
   position: absolute;
@@ -157,7 +203,9 @@ button:hover {
   height: 32px;
 }
 
-#calendarButton, #landingCalendarButton {
+/* Calendar Buttons (Landing and Timer Page) */
+#calendarButton,
+#landingCalendarButton {
   background-color: transparent;
   position: absolute;
   top: 60px; /* Below the home button */
@@ -178,7 +226,7 @@ button:hover {
 #brushLog h2 {
   font-family: 'Press Start 2P', cursive;
   font-size: 1.2em;
-  color: darkblue;
+  color: black; /* Brush Log heading color is black */
   margin-bottom: 10px;
 }
 
@@ -271,17 +319,17 @@ button:hover {
   background-color: #333; /* Darker black on hover */
 }
 
-/* Animation */
+/* Animation for subtle floating (optional) */
 @keyframes floatTooth {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+  50%      { transform: translateY(-5px); }
 }
 
 .bounceTooth {
   animation: floatTooth 2s infinite ease-in-out;
 }
 
-/* ===== MOBILE STYLES ===== */
+/* ===== MEDIA QUERIES ===== */
 @media (max-width: 768px) {
   .landing-header {
     font-size: 1.8em;
