@@ -10,7 +10,7 @@
   <link href="https://fonts.cdnfonts.com/css/digital-7-mono" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
   
-  <!-- ALL CSS IN ONE PLACE -->
+  <!-- Consolidated CSS -->
   <style>
     /* ===== GENERAL STYLES ===== */
     body {
@@ -95,7 +95,7 @@
       margin-bottom: 5px;
       cursor: pointer;
       transition: transform 0.3s ease;
-      display: none; /* Hidden by default, shown after Enter Timer */
+      display: none; /* initially hidden */
     }
     /* Quick twitch on click */
     #toothImage:active {
@@ -165,8 +165,7 @@
     #resetButton:hover {
       background-color: #333;
     }
-
-    /* Resume After End Button - forced green! */
+    /* Resume After End Button */
     #resumeAfterEndButton {
       background-color: #77DD77 !important;
       border: none;
@@ -177,7 +176,7 @@
       color: white;
       cursor: pointer;
       transition: 0.3s;
-      display: none; /* Hidden by default */
+      display: none;
     }
     #resumeAfterEndButton:hover {
       background-color: #99E699;
@@ -436,7 +435,7 @@
       <button id="resetButton" onclick="resetTimer()" aria-label="Reset timer">Reset</button>
     </div>
 
-    <!-- Resume After End Button (hidden initially) -->
+    <!-- Resume After End Button -->
     <button id="resumeAfterEndButton"
             style="display: none; background-color: #77DD77 !important; border: none; border-radius: 5px;
                    padding: 12px 24px; font-size: 1em; font-family: 'Silkscreen', cursive; color: white;
@@ -499,22 +498,22 @@
     </div>
   </div>
 
-  <!-- ALL JS EMBEDDED BELOW -->
+  <!-- Consolidated JS below -->
   <script>
     let countdown;
-    let timeLeft = 120;      // Default 2:00
-    let isPaused = false;    // Tracks Pause/Resume
-    let isStopped = false;   // Tracks if user Ended brushing
-    let startTime;           // For elapsed time calculation
-    let brushHistory = [];   // For logs
+    let timeLeft = 120; // Start at 2:00
+    let isPaused  = false;
+    let isStopped = false;
+    let startTime;
+    let brushHistory = [];
     let cleanImages = ["clean1.png","clean2.png","clean3.png","clean4.png","clean5.png"];
     let cleanImageIndex = 0;
 
     // Additional array & index for manual click cycling
     let cycleImages = ["tooth.png", ...cleanImages];
-    let cycleIndex = 0;
+    let cycleIndex  = 0;
 
-    // --- Reset brush history every 7 days
+    // ----- RESET brush history every 7 days
     function resetBrushHistory() {
       const now = new Date();
       const lastReset = localStorage.getItem("lastReset");
@@ -524,7 +523,7 @@
       }
     }
 
-    // References
+    // Page References
     const landingPage         = document.getElementById("landingPage");
     const timerPage           = document.getElementById("timerPage");
     const timerDisplay        = document.getElementById("timer");
@@ -539,15 +538,15 @@
     const stopPopup           = document.getElementById("stopPopup");
     const resumeAfterEndButton= document.getElementById("resumeAfterEndButton");
 
-    // --- NAVIGATION ---
+    // --- Navigation / Page Flows ---
     function enterTimer() {
       landingPage.style.display = "none";
       timerPage.style.display   = "flex";
       timerPage.style.flexDirection = "column";
       timerPage.style.alignItems    = "center";
 
-      // Show tooth image
-      toothImage.style.display      = "block";
+      // Show tooth
+      toothImage.style.display = "block";
       toothImage.style.backgroundImage = "url('tooth.png')";
       cycleIndex = 0;
     }
@@ -558,13 +557,13 @@
       logBody.innerHTML = ""; // Clear logs
     }
 
-    // --- COUNTDOWN ---
+    // --- Countdown Logic ---
     function startCountdown() {
       startTime = Date.now();
       countdown = setInterval(() => {
         if (!isPaused && !isStopped) {
+          // clamp timeLeft at 0
           if (timeLeft <= 0) {
-            // clamp to 0
             timeLeft = 0;
             clearInterval(countdown);
             timerDisplay.textContent = "0:00";
@@ -574,14 +573,14 @@
             stopButton.style.display = "none";
             toothImage.style.backgroundImage = "url('clean5.png')";
             logAction("Completed", 120);
-            return; // stop
+            return;
           }
           let minutes = Math.floor(timeLeft / 60);
           let seconds = timeLeft % 60;
-          if (seconds < 10) seconds = "0" + seconds;
+          seconds = (seconds < 10) ? "0" + seconds : seconds;
           timerDisplay.textContent = minutes + ":" + seconds;
 
-          // Magnify & rotate images for last 5s
+          // Magnify + rotate images for last 5s
           if (timeLeft <= 5) {
             timerDisplay.classList.add("magnify");
             toothImage.style.backgroundImage = "url('" + cleanImages[cleanImageIndex] + "')";
@@ -592,11 +591,11 @@
       }, 1000);
     }
     function startTimer() {
-      startBtnTimerPage.style.display = "none"; // Hide Start
-      pauseButton.disabled            = false;
-      stopButton.disabled             = false;
-      pauseButton.style.display       = "inline-block";
-      stopButton.style.display        = "inline-block";
+      startBtnTimerPage.style.display = "none";
+      pauseButton.disabled = false;
+      stopButton.disabled  = false;
+      pauseButton.style.display= "inline-block";
+      stopButton.style.display = "inline-block";
       isPaused   = false;
       isStopped  = false;
       startTime  = Date.now();
@@ -615,12 +614,12 @@
         // Resume
         isPaused = false;
         pauseButton.textContent       = "Pause";
-        pauseButton.style.backgroundColor = "#FFB347"; // Orange
+        pauseButton.style.backgroundColor = "#FFB347";
         logAction("Resumed", getElapsedTime());
       }
     }
 
-    // --- STOP FLOW ---
+    // --- Stop Confirmation Flow ---
     function stopConfirmation() {
       if (!isPaused && !isStopped) {
         clearInterval(countdown);
@@ -628,11 +627,10 @@
       }
       stopPopup.style.display = "flex";
     }
-
     // Stop Popup: Resume
     function resumeBrushing() {
       stopPopup.style.display = "none";
-      isPaused = false;
+      isPaused   = false;
       startCountdown();
       stopButton.disabled = false;
       pauseButton.disabled= false;
@@ -644,68 +642,73 @@
     function confirmStop() {
       stopPopup.style.display = "none";
       clearInterval(countdown);
-      isStopped = true;
+      isStopped  = true;
       timerDisplay.classList.remove("magnify");
-      pauseButton.disabled    = true;
-      stopButton.disabled     = true;
+      pauseButton.disabled = true;
+      stopButton.disabled  = true;
 
-      const brushedTime     = getElapsedTime();
-      const timeRemaining   = timeLeft;
+      const brushedTime   = getElapsedTime();
+      const timeRemaining = timeLeft;
       timerDisplay.textContent = `You only brushed for ${brushedTime} seconds. `
                                + `Brush for ${timeRemaining} more seconds to ensure cavity prevention.`;
       logAction("Stopped early", brushedTime);
 
-      // Hide Pause & Stop => only Resume & Reset remain
-      pauseButton.style.display       = "none";
-      stopButton.style.display        = "none";
+      // Hide Pause & Stop => Only Resume & Reset remain
+      pauseButton.style.display= "none";
+      stopButton.style.display = "none";
       // Show Resume Brushing
       resumeAfterEndButton.style.display = "inline-block";
     }
 
-    // --- Resume After End ---
+    // Resume After End
     function resumeAfterEnd() {
+      // Hide the resume button
       resumeAfterEndButton.style.display = "none";
-      isStopped       = false;
+      // Set flags so the timer will continue
+      isStopped = false;
+      isPaused  = false;
       pauseButton.disabled = false;
       stopButton.disabled  = false;
-      // Re-display Pause & Stop
-      pauseButton.style.display = "inline-block";
-      stopButton.style.display  = "inline-block";
+
+      pauseButton.style.display= "inline-block";
+      stopButton.style.display = "inline-block";
+
+      // RE-assign startTime so we can track "resume" properly
+      startTime = Date.now();
       startCountdown();
-      logAction("Resumed", getElapsedTime());
+      logAction("Resumed after end", getElapsedTime());
     }
 
     // --- RESET ---
     function resetTimer() {
       clearInterval(countdown);
-      timerDisplay.textContent    = "2:00";
+      timerDisplay.textContent = "2:00";
+      timerDisplay.style.color = "#B39EB5";
       timerDisplay.classList.remove("magnify");
-      timerDisplay.style.color    = "#B39EB5";
-      timeLeft  = 120;
-      isPaused  = false;
-      isStopped = false;
+      timeLeft   = 120;
+      isPaused   = false;
+      isStopped  = false;
 
-      pauseButton.disabled        = true;
-      pauseButton.textContent     = "Pause";
+      pauseButton.disabled      = true;
+      pauseButton.textContent   = "Pause";
       pauseButton.style.backgroundColor = "#FFB347";
-      pauseButton.style.display   = "inline-block";
+      pauseButton.style.display = "inline-block";
 
-      stopButton.disabled         = true;
-      stopButton.style.display    = "inline-block";
+      stopButton.disabled  = true;
+      stopButton.style.display= "inline-block";
 
-      startBtnTimerPage.style.display = "inline-block"; // Show Start
+      startBtnTimerPage.style.display = "inline-block";
       logBody.innerHTML = "";
 
-      // Hide "Resume Brushing" if visible
       resumeAfterEndButton.style.display = "none";
-
       cleanImageIndex = 0;
       cycleIndex      = 0;
-      toothImage.style.display      = "block";
-      toothImage.style.backgroundImage = "url('tooth.png')";
+
+      toothImage.style.display = "block";
+      toothImage.style.backgroundImage= "url('tooth.png')";
     }
 
-    // --- LOGGING ---
+    // --- Log / Elapsed Time ---
     function logAction(action, elapsedSeconds) {
       const now = new Date();
       const timeString = now.toLocaleTimeString();
@@ -720,7 +723,6 @@
         });
       }
     }
-    // Elapsed time in seconds
     function getElapsedTime() {
       return Math.floor((Date.now() - startTime)/1000);
     }
