@@ -177,8 +177,8 @@
             pauseButton.disabled = true;
             stopButton.disabled = true;
             toothImage.style.backgroundImage = "url('clean5.png')";
-            // Log Completed only once
-            if(timeLeft === 0) {
+            // Log Completed only once when timeLeft hits 0
+            if (timeLeft === 0) {
               logAction("Completed", 120);
             }
           }
@@ -250,7 +250,7 @@
 
       const brushedTime = getElapsedTime();
       const timeRemaining = timeLeft;
-      timerDisplay.textContent = "You only brushed for " + brushedTime + " seconds. Brush for " + timeRemaining + " more seconds to ensure cavity prevention.";
+      timerDisplay.textContent = `You only brushed for ${brushedTime} seconds. Brush for ${timeRemaining} more seconds to ensure cavity prevention.`;
       logAction("Stopped early", brushedTime);
 
       // Show resume button after ending
@@ -263,7 +263,7 @@
       isStopped = false;
       pauseButton.disabled = false;
       stopButton.disabled = false;
-      // Resume countdown from current timeLeft
+      // Resume the countdown from current timeLeft
       startCountdown();
       logAction("Resumed", getElapsedTime());
     }
