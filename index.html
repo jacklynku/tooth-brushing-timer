@@ -25,7 +25,7 @@
   <!-- Timer Page (hidden initially) -->
   <div id="timerPage" style="display: none;">
     <!-- Return to Home Button -->
-    <button id="returnHomeButton" onclick="returnHome()" aria-label="Return to home" style="background: url('home.png') no-repeat center; background-size: contain; width: 36px; height: 36px; border: none; padding: 0;"></button>
+    <button id="returnHomeButton" onclick="returnHome()" aria-label="Return to home" style="background: url('home.png') no-repeat center; background-size: contain; width: 32px; height: 32px; border: none; padding: 0;"></button>
 
     <!-- Calendar Icon on Timer Page -->
     <button id="calendarButton" onclick="openCalendarPopup()" aria-label="Open calendar" style="position: absolute; top: 60px; right: 20px; font-size: 1.5em; border: none; background: none; cursor: pointer;">🗓️</button>
@@ -145,8 +145,9 @@
           if (seconds < 10) seconds = "0" + seconds;
           timerDisplay.textContent = minutes + ":" + seconds;
 
-          // Change tooth image during the last 5 seconds
+          // Magnify animation from 5 seconds left
           if (timeLeft <= 5) {
+            timerDisplay.classList.add("magnify");
             toothImage.style.backgroundImage = `url('${cleanImages[cleanImageIndex]}')`;
             cleanImageIndex = (cleanImageIndex + 1) % cleanImages.length;
           }
@@ -196,6 +197,7 @@
       clearInterval(countdown);
       timerDisplay.textContent = "2:00";
       timerDisplay.style.color = "#B39EB5"; // Reset to pastel purple
+      timerDisplay.classList.remove("magnify");
       timeLeft = 120;
       stopButton.disabled = false;
       pauseButton.disabled = true;
