@@ -338,4 +338,14 @@
       }
     }
 
-    // ========== Manual To
+    // ========== Manual Tooth Image Cycling ==========
+    function cycleToothImage() {
+      cycleIndex=(cycleIndex+1)%cycleImages.length;
+      toothImage.style.backgroundImage=`url('${cycleImages[cycleIndex]}')`;
+    }
+
+    // On load, display "2:00" 
+    updateTimerDisplay();
+  </script>
+</body>
+</html>
