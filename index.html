@@ -10,7 +10,7 @@
   <link href="https://fonts.cdnfonts.com/css/digital-7-mono" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
 
-  <!-- Our external stylesheet -->
+  <!-- Our stylesheet -->
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -18,32 +18,30 @@
   <!-- Landing Page -->
   <div id="landingPage">
     <h1 class="landing-header">Let's Brush Our Teeth</h1>
+    <!-- Big tooth on landing -->
     <div id="landingToothImage" onclick="enterTimer()"></div>
     <button id="landingStartButton" onclick="enterTimer()" aria-label="Enter brushing timer">Enter Timer</button>
 
-    <!-- Calendar Icon on Landing Page -->
+    <!-- Calendar on Landing Page -->
     <button id="landingCalendarButton" onclick="openCalendarPopup()" aria-label="Open calendar"
-            style="position: absolute; top: 20px; right: 20px; font-size: 1.5em;
-                   border: none; background: none; cursor: pointer;">
+            style="position: absolute; top: 20px; right: 20px; font-size: 1.5em; border: none; background: none; cursor: pointer;">
       <img src="calendar.png" alt="Calendar" style="width: 24px; height: 24px;">
     </button>
   </div>
 
-  <!-- Timer Page (hidden initially) -->
-  <div id="timerPage">
-    <!-- Return to Home Button -->
+  <!-- Timer Page -->
+  <div id="timerPage" style="display: none;">
+    <!-- Return to Home -->
     <button id="returnHomeButton" onclick="returnHome()" aria-label="Return to home"></button>
 
-    <!-- Calendar Icon on Timer Page -->
+    <!-- Calendar on Timer Page -->
     <button id="calendarButton" onclick="openCalendarPopup()" aria-label="Open calendar">
       <img src="calendar.png" alt="Calendar" style="width: 24px; height: 24px;">
     </button>
 
     <h1 id="timerHeading">TOOTH BRUSHING TIMER</h1>
 
-    <!-- Tooth image above the timer (click to cycle images) -->
-    <div id="toothImage" style="display: none;"></div>
-
+    <div id="toothImage" style="display: none;" onclick="cycleToothImage()"></div>
     <div id="timer">2:00</div>
 
     <!-- Timer Buttons -->
@@ -54,7 +52,7 @@
       <button id="resetButton" onclick="resetTimer()" aria-label="Reset timer">Reset</button>
     </div>
 
-    <!-- Brush Log Table -->
+    <!-- Brush Log -->
     <div id="brushLog">
       <h2>Brush Log</h2>
       <div style="max-height: 200px; overflow-y: auto;">
@@ -67,7 +65,7 @@
             </tr>
           </thead>
           <tbody id="logBody">
-            <!-- Log entries are inserted here -->
+            <!-- Log entries here -->
           </tbody>
         </table>
       </div>
@@ -89,14 +87,14 @@
             </tr>
           </thead>
           <tbody id="calendarLogBody">
-            <!-- Completed or early-stop logs go here -->
+            <!-- Completed or Stopped Early logs here -->
           </tbody>
         </table>
       </div>
     </div>
   </div>
 
-  <!-- Stop Confirmation Popup -->
+  <!-- Single Stop Confirmation Popup -->
   <div id="stopPopup" style="display: none;" class="popup-overlay">
     <div id="stopPopupContent" class="popup-content">
       <h2>are you sure? it is important to brush for 2 minutes.</h2>
@@ -110,20 +108,20 @@
   </div>
 
   <script>
-    /* ========== Timer Variables ========== */
-    let countdown     = null; // setInterval reference
-    let timeLeft      = 120;  // 2 minutes default
-    let isPaused      = false;
-    let isStopped     = false;
-    let brushHistory  = [];
-    let cleanImages   = ["clean1.png","clean2.png","clean3.png","clean4.png","clean5.png"];
+    /* Timer variables */
+    let countdown       = null;  // setInterval handle
+    let timeLeft        = 120;   // 2:00
+    let isPaused        = false;
+    let isStopped       = false;
+    let brushHistory    = [];
+    let cleanImages     = ["clean1.png","clean2.png","clean3.png","clean4.png","clean5.png"];
     let cleanImageIndex = 0;
 
-    // Additional array & index for manual click cycling
+    /* For manual click cycling of tooth images */
     let cycleImages = ["tooth.png", ...cleanImages];
     let cycleIndex  = 0;
 
-    // Page Elements
+    /* Page elements */
     const landingPage   = document.getElementById("landingPage");
     const timerPage     = document.getElementById("timerPage");
     const timerDisplay  = document.getElementById("timer");
@@ -137,7 +135,7 @@
     const calendarLogBody= document.getElementById("calendarLogBody");
     const stopPopup     = document.getElementById("stopPopup");
 
-    /* ========== 7-Day Brush History Reset ========== */
+    /* Brush history reset every 7 days if wanted */
     function resetBrushHistory() {
       const now = new Date();
       const lastReset = localStorage.getItem("lastReset");
@@ -148,11 +146,10 @@
     }
     resetBrushHistory(); // on load
 
-    /* ========== Navigation Flow ========== */
+    // ========== Navigation Flow ==========
     function enterTimer() {
       landingPage.style.display = "none";
       timerPage.style.display   = "flex";
-
       toothImage.style.display  = "block";
       toothImage.style.backgroundImage = "url('tooth.png')";
       cycleIndex = 0;
@@ -161,10 +158,10 @@
       timerPage.style.display   = "none";
       landingPage.style.display = "flex";
       resetTimer();
-      logBody.innerHTML = ""; // clear logs
+      logBody.innerHTML = "";
     }
 
-    /* ========== Calendar Popup ========== */
+    // ========== Calendar Popup ==========
     function openCalendarPopup() {
       calendarPopup.style.display = "flex";
       updateCalendarLog();
@@ -185,19 +182,20 @@
       });
     }
 
-    /* ========== Timer Functions ========== */
-    // Display timeLeft as M:SS
+    // ========== Timer ==========
+    // Show timeLeft in M:SS format
     function updateTimerDisplay() {
       let minutes = Math.floor(timeLeft/60);
       let seconds = timeLeft%60;
-      if(seconds<10) seconds = "0"+seconds;
-      timerDisplay.textContent = minutes + ":" + seconds;
+      if(seconds<10) seconds="0"+seconds;
+      timerDisplay.textContent = minutes+":"+seconds;
     }
 
-    // Called each second
+    // Single 1-second tick
     function tick() {
       if(!isPaused && !isStopped) {
-        if(timeLeft <= 0) {
+        if(timeLeft<=0) {
+          // clamp
           timeLeft=0;
           clearInterval(countdown);
           countdown=null;
@@ -213,7 +211,7 @@
         timeLeft--;
         updateTimerDisplay();
 
-        // For last 5 seconds, magnify & rotate images
+        // For last 5s, do magnify & rotate images
         if(timeLeft<=5) {
           timerDisplay.classList.add("magnify");
           toothImage.style.backgroundImage=`url('${cleanImages[cleanImageIndex]}')`;
@@ -223,9 +221,9 @@
     }
 
     function startTimer() {
-      // Hide Start
+      // hide Start
       startBtn.style.display="none";
-      // Enable & show Pause/Stop
+      // enable Pause & Stop
       pauseBtn.disabled=false;
       stopBtn.disabled=false;
       pauseBtn.style.display="inline-block";
@@ -234,7 +232,7 @@
       isStopped=false;
 
       if(countdown) { clearInterval(countdown); countdown=null; }
-      countdown = setInterval(tick, 1000);
+      countdown = setInterval(tick,1000);
       logAction("Started", 0);
     }
 
@@ -244,19 +242,18 @@
         isPaused=true;
         pauseBtn.textContent="Resume";
         pauseBtn.style.backgroundColor="#77DD77"; // green
-        logAction("Paused", 120-timeLeft);
+        logAction("Paused",120-timeLeft);
       } else {
         // Resume
         isPaused=false;
         pauseBtn.textContent="Pause";
         pauseBtn.style.backgroundColor="#FFB347"; // orange
-        logAction("Resumed", 120-timeLeft);
+        logAction("Resumed",120-timeLeft);
       }
     }
 
-    /* ========== Stop Popup Flow (Single Popup) ========== */
+    // ========== Single Stop Popup Flow ==========
     function stopConfirmation() {
-      // Pause the timer while user decides
       if(!isPaused && !isStopped) {
         clearInterval(countdown);
         countdown=null;
@@ -265,11 +262,11 @@
       stopPopup.style.display="flex";
     }
 
+    // user picks "Resume" from the single popup
     function resumeBrushing() {
-      // user picks "Resume" from single popup
       stopPopup.style.display="none";
       isPaused=false;
-      if(!countdown) countdown=setInterval(tick, 1000);
+      if(!countdown) countdown=setInterval(tick,1000);
       pauseBtn.disabled=false;
       stopBtn.disabled=false;
       pauseBtn.textContent="Pause";
@@ -277,8 +274,8 @@
       logAction("Resumed",120-timeLeft);
     }
 
+    // user picks "End" from the single popup
     function confirmStop() {
-      // user picks "End" from single popup
       stopPopup.style.display="none";
       if(countdown) { clearInterval(countdown); countdown=null; }
       isStopped=true;
@@ -286,27 +283,25 @@
       pauseBtn.disabled=true;
       stopBtn.disabled=true;
 
-      // Time calculations
-      let brushedTime = 120 - timeLeft; // how many seconds user brushed
-      let remainTime  = timeLeft;       // leftover
-      timerDisplay.textContent = `You only brushed for ${brushedTime} seconds. `
-                               + `Brush for ${remainTime} more seconds to ensure cavity prevention.`;
-      logAction("Stopped early", brushedTime);
+      // X & Y logic
+      let brushedTime=120-timeLeft; // X
+      let remainTime=timeLeft;      // Y
+      timerDisplay.textContent= `You only brushed for ${brushedTime} seconds. `
+                              + `Brush for ${remainTime} more seconds to ensure cavity prevention.`;
+      logAction("Stopped early",brushedTime);
 
-      // hide Pause & Stop => only Reset remains
+      // hide Pause/Stop => only Reset remains
       pauseBtn.style.display="none";
       stopBtn.style.display="none";
     }
 
-    /* ========== Reset (does NOT auto-start) ========== */
+    // ========== Reset (does NOT auto-start) ==========
     function resetTimer() {
-      if(countdown) {
-        clearInterval(countdown);
-        countdown=null;
-      }
+      if(countdown) { clearInterval(countdown); countdown=null; }
       timeLeft=120;
       isPaused=false;
       isStopped=false;
+
       timerDisplay.classList.remove("magnify");
       timerDisplay.style.color="#B39EB5";
       updateTimerDisplay(); // show "2:00"
@@ -321,19 +316,18 @@
 
       startBtn.style.display="inline-block";
       logBody.innerHTML="";
-
       toothImage.style.display="block";
       toothImage.style.backgroundImage="url('tooth.png')";
       cleanImageIndex=0;
       cycleIndex=0;
     }
 
-    /* ========== Logging ========== */
+    // ========== Logging ==========
     function logAction(action, elapsedSeconds) {
       const now=new Date();
-      const timeString=now.toLocaleTimeString();
+      const timeString= now.toLocaleTimeString();
       const row=`<tr><td>${action}</td><td>${timeString}</td><td>${elapsedSeconds}</td></tr>`;
-      logBody.insertAdjacentHTML("afterbegin", row);
+      logBody.insertAdjacentHTML("afterbegin",row);
 
       if(action==="Completed"||action==="Stopped early") {
         brushHistory.push({
@@ -344,14 +338,4 @@
       }
     }
 
-    /* ========== Manual Tooth Image Cycling ========== */
-    function cycleToothImage() {
-      cycleIndex=(cycleIndex+1)%cycleImages.length;
-      toothImage.style.backgroundImage=`url('${cycleImages[cycleIndex]}')`;
-    }
-
-    // On load, ensure 2:00 is displayed
-    updateTimerDisplay();
-  </script>
-</body>
-</html>
+    // ========== Manual To
