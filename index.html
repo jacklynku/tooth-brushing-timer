@@ -108,14 +108,16 @@
   </div>
 
   <script>
-    /* Timer variables */
-    let countdown       = null;  // setInterval handle
-    let timeLeft        = 120;   // 2:00
-    let isPaused        = false;
-    let isStopped       = false;
-    let brushHistory    = [];
-    let cleanImages     = ["clean1.png","clean2.png","clean3.png","clean4.png","clean5.png"];
-    let cleanImageIndex = 0;
+    /* Timer constants & variables */
+    const TOTAL_TIME     = 120;   // total brush time in seconds
+    let countdown        = null;  
+    let timeLeft         = TOTAL_TIME;
+    let elapsedTime      = 0;     // actual seconds spent brushing
+    let isPaused         = false;
+    let isStopped        = false;
+    let brushHistory     = [];
+    let cleanImages      = ["clean1.png","clean2.png","clean3.png","clean4.png","clean5.png"];
+    let cleanImageIndex  = 0;
 
     /* For manual click cycling of tooth images */
     let cycleImages = ["tooth.png", ...cleanImages];
@@ -139,7 +141,7 @@
     function resetBrushHistory() {
       const now = new Date();
       const lastReset = localStorage.getItem("lastReset");
-      if(!lastReset || ((now - new Date(lastReset)) / (1000*60*60*24)) >= 7) {
+      if (!lastReset || ((now - new Date(lastReset)) / (1000*60*60*24)) >= 7) {
         brushHistory = [];
         localStorage.setItem("lastReset", now.toISOString());
       }
@@ -170,9 +172,7 @@
       calendarPopup.style.display = "none";
     }
     calendarPopup.addEventListener('click', (e)=>{
-      if(e.target.id==="calendarPopup") {
-        closeCalendarPopup();
-      }
+      if (e.target.id==="calendarPopup") closeCalendarPopup();
     });
     function updateCalendarLog() {
       calendarLogBody.innerHTML = "";
@@ -183,153 +183,143 @@
     }
 
     // ========== Timer ==========
-    // Show timeLeft in M:SS format
     function updateTimerDisplay() {
       let minutes = Math.floor(timeLeft/60);
-      let seconds = timeLeft%60;
-      if(seconds<10) seconds="0"+seconds;
-      timerDisplay.textContent = minutes+":"+seconds;
+      let seconds = timeLeft % 60;
+      if (seconds < 10) seconds = "0"+seconds;
+      timerDisplay.textContent = minutes + ":" + seconds;
     }
 
-    // Single 1-second tick
     function tick() {
-      if(!isPaused && !isStopped) {
-        if(timeLeft<=0) {
-          // clamp
-          timeLeft=0;
+      if (!isPaused && !isStopped) {
+        if (timeLeft <= 0) {
+          timeLeft     = 0;
+          elapsedTime  = TOTAL_TIME;
           clearInterval(countdown);
-          countdown=null;
-          timerDisplay.textContent="0:00";
-          pauseBtn.disabled=true;
-          stopBtn.disabled=true;
-          pauseBtn.style.display="none";
-          stopBtn.style.display="none";
-          toothImage.style.backgroundImage="url('clean5.png')";
-          logAction("Completed",120);
+          countdown    = null;
+          timerDisplay.textContent = "0:00";
+          pauseBtn.disabled = true;
+          stopBtn.disabled  = true;
+          pauseBtn.style.display = "none";
+          stopBtn.style.display  = "none";
+          toothImage.style.backgroundImage = "url('clean5.png')";
+          logAction("Completed", elapsedTime);
           return;
         }
         timeLeft--;
+        elapsedTime++;
         updateTimerDisplay();
 
-        // For last 5s, do magnify & rotate images
-        if(timeLeft<=5) {
+        if (timeLeft <= 5) {
           timerDisplay.classList.add("magnify");
-          toothImage.style.backgroundImage=`url('${cleanImages[cleanImageIndex]}')`;
-          cleanImageIndex=(cleanImageIndex+1)%cleanImages.length;
+          toothImage.style.backgroundImage = `url('${cleanImages[cleanImageIndex]}')`;
+          cleanImageIndex = (cleanImageIndex + 1) % cleanImages.length;
         }
       }
     }
 
     function startTimer() {
-      // hide Start
-      startBtn.style.display="none";
-      // enable Pause & Stop
-      pauseBtn.disabled=false;
-      stopBtn.disabled=false;
-      pauseBtn.style.display="inline-block";
-      stopBtn.style.display="inline-block";
-      isPaused=false; 
-      isStopped=false;
+      startBtn.style.display = "none";
+      pauseBtn.disabled = false;
+      stopBtn.disabled  = false;
+      pauseBtn.style.display = "inline-block";
+      stopBtn.style.display  = "inline-block";
+      isPaused = false; 
+      isStopped= false;
 
-      if(countdown) { clearInterval(countdown); countdown=null; }
-      countdown = setInterval(tick,1000);
+      if (countdown) clearInterval(countdown);
+      countdown = setInterval(tick, 1000);
       logAction("Started", 0);
     }
 
     function pauseTimer() {
-      if(!isPaused) {
-        // Pause
-        isPaused=true;
-        pauseBtn.textContent="Resume";
-        pauseBtn.style.backgroundColor="#77DD77"; // green
-        logAction("Paused",120-timeLeft);
+      if (!isPaused) {
+        isPaused = true;
+        pauseBtn.textContent = "Resume";
+        pauseBtn.style.backgroundColor = "#77DD77";
+        logAction("Paused", elapsedTime);
       } else {
-        // Resume
-        isPaused=false;
-        pauseBtn.textContent="Pause";
-        pauseBtn.style.backgroundColor="#FFB347"; // orange
-        logAction("Resumed",120-timeLeft);
+        isPaused = false;
+        pauseBtn.textContent = "Pause";
+        pauseBtn.style.backgroundColor = "#FFB347";
+        logAction("Resumed", elapsedTime);
       }
     }
 
-    // ========== Single Stop Popup Flow ==========
     function stopConfirmation() {
-      if(!isPaused && !isStopped) {
+      if (!isPaused && !isStopped) {
         clearInterval(countdown);
-        countdown=null;
-        isPaused=true;
+        countdown = null;
+        isPaused = true;
       }
-      stopPopup.style.display="flex";
+      stopPopup.style.display = "flex";
     }
 
-    // user picks "Resume" from the single popup
     function resumeBrushing() {
-      stopPopup.style.display="none";
-      isPaused=false;
-      if(!countdown) countdown=setInterval(tick,1000);
-      pauseBtn.disabled=false;
-      stopBtn.disabled=false;
-      pauseBtn.textContent="Pause";
-      pauseBtn.style.backgroundColor="#FFB347";
-      logAction("Resumed",120-timeLeft);
+      stopPopup.style.display = "none";
+      isPaused = false;
+      if (!countdown) countdown = setInterval(tick, 1000);
+      pauseBtn.disabled = false;
+      stopBtn.disabled  = false;
+      pauseBtn.textContent = "Pause";
+      pauseBtn.style.backgroundColor = "#FFB347";
+      logAction("Resumed", elapsedTime);
     }
 
-    // user picks "End" from the single popup
     function confirmStop() {
-      stopPopup.style.display="none";
-      if(countdown) { clearInterval(countdown); countdown=null; }
-      isStopped=true;
+      stopPopup.style.display = "none";
+      if (countdown) clearInterval(countdown);
+      isStopped = true;
       timerDisplay.classList.remove("magnify");
-      pauseBtn.disabled=true;
-      stopBtn.disabled=true;
+      pauseBtn.disabled = true;
+      stopBtn.disabled  = true;
 
-      // X & Y logic
-      let brushedTime=120-timeLeft; // X
-      let remainTime=timeLeft;      // Y
-      timerDisplay.textContent= `You only brushed for ${brushedTime} seconds. `
-                              + `Brush for ${remainTime} more seconds to ensure cavity prevention.`;
-      logAction("Stopped early",brushedTime);
+      let brushedTime   = elapsedTime;
+      let remainingTime = TOTAL_TIME - elapsedTime;
+      timerDisplay.textContent =
+        `You only brushed for ${brushedTime} seconds. ` +
+        `Brush for ${remainingTime} more seconds to ensure cavity prevention.`;
 
-      // hide Pause/Stop => only Reset remains
-      pauseBtn.style.display="none";
-      stopBtn.style.display="none";
+      logAction("Stopped early", brushedTime);
+
+      pauseBtn.style.display = "none";
+      stopBtn.style.display  = "none";
     }
 
-    // ========== Reset (does NOT auto-start) ==========
     function resetTimer() {
-      if(countdown) { clearInterval(countdown); countdown=null; }
-      timeLeft=120;
-      isPaused=false;
-      isStopped=false;
+      if (countdown) clearInterval(countdown);
+      timeLeft     = TOTAL_TIME;
+      elapsedTime  = 0;
+      isPaused     = false;
+      isStopped    = false;
 
       timerDisplay.classList.remove("magnify");
-      timerDisplay.style.color="#B39EB5";
-      updateTimerDisplay(); // show "2:00"
+      timerDisplay.style.color = "#B39EB5";
+      updateTimerDisplay();
 
-      pauseBtn.disabled=true;
-      pauseBtn.textContent="Pause";
-      pauseBtn.style.backgroundColor="#FFB347";
-      pauseBtn.style.display="inline-block";
+      pauseBtn.disabled = true;
+      pauseBtn.textContent = "Pause";
+      pauseBtn.style.backgroundColor = "#FFB347";
+      pauseBtn.style.display = "inline-block";
 
-      stopBtn.disabled=true;
-      stopBtn.style.display="inline-block";
+      stopBtn.disabled = true;
+      stopBtn.style.display = "inline-block";
 
-      startBtn.style.display="inline-block";
-      logBody.innerHTML="";
-      toothImage.style.display="block";
-      toothImage.style.backgroundImage="url('tooth.png')";
-      cleanImageIndex=0;
-      cycleIndex=0;
+      startBtn.style.display = "inline-block";
+      logBody.innerHTML = "";
+      toothImage.style.display = "block";
+      toothImage.style.backgroundImage = "url('tooth.png')";
+      cleanImageIndex = 0;
+      cycleIndex     = 0;
     }
 
-    // ========== Logging ==========
     function logAction(action, elapsedSeconds) {
-      const now=new Date();
-      const timeString= now.toLocaleTimeString();
-      const row=`<tr><td>${action}</td><td>${timeString}</td><td>${elapsedSeconds}</td></tr>`;
-      logBody.insertAdjacentHTML("afterbegin",row);
+      const now = new Date();
+      const timeString = now.toLocaleTimeString();
+      const row = `<tr><td>${action}</td><td>${timeString}</td><td>${elapsedSeconds}</td></tr>`;
+      logBody.insertAdjacentHTML("afterbegin", row);
 
-      if(action==="Completed"||action==="Stopped early") {
+      if (action === "Completed" || action === "Stopped early") {
         brushHistory.push({
           date: now.toLocaleDateString(),
           time: timeString,
@@ -338,13 +328,12 @@
       }
     }
 
-    // ========== Manual Tooth Image Cycling ==========
     function cycleToothImage() {
-      cycleIndex=(cycleIndex+1)%cycleImages.length;
-      toothImage.style.backgroundImage=`url('${cycleImages[cycleIndex]}')`;
+      cycleIndex = (cycleIndex + 1) % cycleImages.length;
+      toothImage.style.backgroundImage = `url('${cycleImages[cycleIndex]}')`;
     }
 
-    // On load, display "2:00" 
+    // On load, display "2:00"
     updateTimerDisplay();
   </script>
 </body>
